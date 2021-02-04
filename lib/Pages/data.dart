@@ -13,7 +13,7 @@ class Data extends StatelessWidget {
         title: new Text('Datas'),
       ),
       body: StreamBuilder(
-    stream: FirebaseFirestore.instance.collection('stops').snapshots(),
+    stream: FirebaseFirestore.instance.collection('routes').snapshots(),
     builder: (context, snapshot){
       if(!snapshot.hasData){
         return Center(
@@ -26,7 +26,7 @@ class Data extends StatelessWidget {
             child: Container(
               width: MediaQuery.of(context).size.width / 1.2,
               height: MediaQuery.of(context).size.height / 6,
-              child: Text("Title: " + document['name']),
+              child: Text("Title: " + document['order']),
             ),
           );
         }).toList(),

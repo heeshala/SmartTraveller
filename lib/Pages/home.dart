@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:smart_traveller/Pages/routes.dart';
 //import 'package:smart_traveller/Pages/routes.dart';
-import 'package:smart_traveller/Pages/stops.dart';
-import 'package:smart_traveller/Pages/data.dart';
+import 'package:smart_traveller/Pages/test.dart';
+
 
 
 class HomePage extends StatelessWidget{
@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget{
           Navigator.pop(context);
     Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => Routes())
+    MaterialPageRoute(builder: (context) => Stops())
   );
 },
       ),
