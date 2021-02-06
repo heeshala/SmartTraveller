@@ -9,6 +9,12 @@ class Stops extends StatefulWidget {
   _NewMapState createState() => _NewMapState();
 }
 
+Future setMapStyle(GoogleMapController controller, BuildContext context) async {
+  String value = await DefaultAssetBundle.of(context)
+      .loadString('assets/maps/map_style.json');
+  await controller.setMapStyle(value);
+}
+
 class _NewMapState extends State<Stops> {
   GoogleMapController _controller;
 
@@ -18,33 +24,51 @@ class _NewMapState extends State<Stops> {
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   BitmapDescriptor pinLocationIcon;
+  var lat;
+  var long;
+  
+  Future<Widget> reloadCurrentLocation;
+    
+      @override
+      void initState() {
+        super.initState();
+    
+        reloadCurrentLocation = getCurrentLocation();
+      }
+    
+      Future<Widget> getCurrentLocation() async {
+         LocationPermission permission;
+         
+         permission = await Geolocator.checkPermission();
+         if (permission == LocationPermission.deniedForever) {
+           lat=40.7128;long=74.0060;
+         }
+    
+         else if (permission == LocationPermission.denied) {
+           permission = await Geolocator.requestPermission();
+         if (permission != LocationPermission.whileInUse &&
+            permission != LocationPermission.always) {
+            lat=40.7128;long=74.0060;
+            }
+        }
+        else {
+          Position res = await Geolocator.getCurrentPosition(desiredAccuracy: 
+          LocationAccuracy.high); //getCurrentPosition();
+        
+          lat=res.latitude;
+          long=res.longitude;          
+        }
+        
+        populateClients();
+        setCustomMapPin();
+          
+        return _child = mapWidget();
+    }
 
-  @override
-  void initState() {
-    _child = SpinKitRipple(
-      itemBuilder: (BuildContext context, int index) {
-        return DecoratedBox(
-          decoration: BoxDecoration(
-            color: index.isEven ? Colors.grey : Color(0xffffb838),
-          ),
-        );
-      },
-    );
-    getCurrentLocation();
-    populateClients();
-    setCustomMapPin();
-    super.initState();
-  }
-
-  void getCurrentLocation() async {
-    Position res = await getCurrentPosition();
-    setState(() {
-      position = res;
-      _child = mapWidget();
-    });
-  }
+  
 
   populateClients() async {
+    
     FirebaseFirestore.instance.collection('stops').get().then((docs) {
       if (docs.docs.isNotEmpty) {
         for (int i = 0; i < docs.docs.length; ++i) {
@@ -55,16 +79,17 @@ class _NewMapState extends State<Stops> {
   }
 
   void initMarker(tomb, tombId) {
+    var stopname=tomb['name'];
     var markerIdVal = tombId;
     final MarkerId markerId = MarkerId(markerIdVal);
-
+    
     final Marker marker = Marker(
       markerId: markerId,
       position: LatLng(tomb['location'].latitude, tomb['location'].longitude),
       icon: pinLocationIcon,
-      infoWindow: InfoWindow(title: 'Shop', snippet: tombId),
+      
       onTap: () {
-        _settingModalBottomSheet(context,markerIdVal);
+        _settingModalBottomSheet(context,markerIdVal,stopname);
       },
     );
     setState(() {
@@ -74,7 +99,7 @@ class _NewMapState extends State<Stops> {
 
   void setCustomMapPin() async {
     pinLocationIcon = await BitmapDescriptor.fromAssetImage(
-        ImageConfiguration(devicePixelRatio: 2.5), 'assets/images/pin.png');
+        ImageConfiguration(devicePixelRatio: 10.5), 'assets/images/bus-stop.png');
   }
 
   @override
@@ -90,71 +115,127 @@ class _NewMapState extends State<Stops> {
     );
   }
 
-  Widget mapWidget() {
-    return Stack(
-      children: <Widget>[
-        GoogleMap(
-          initialCameraPosition: CameraPosition(
-            target: LatLng(position.latitude, position.longitude),
-            zoom: 18,
-          ),
+   Widget mapWidget() {
+    return FutureBuilder(
+                future: reloadCurrentLocation,
+                builder: (context, state) {
+                  if (state.connectionState == ConnectionState.active ||
+                      state.connectionState == ConnectionState.waiting) {
+                      return SpinKitRipple(
+                        itemBuilder: (BuildContext context, int index) {
+                          return DecoratedBox(
+                               decoration: BoxDecoration(
+                               color: index.isEven ? Colors.grey : 
+                                    Color(0xffffb838),
+                               ),
+                          );
+                        },
+                      );
+                  } else {
+                      return Stack(
+                        children: <Widget>[
+                         GoogleMap(
+                           initialCameraPosition: CameraPosition(
+                           target: 
+                           LatLng(lat,long),//(position.latitude, 
+                           //position.longitude),
+                           zoom: 18,
+                         ),
 
-          ///mapType: MapType.normal,
-          onMapCreated: (GoogleMapController controller) {
-            _controller = controller;
-          },
+                         ///mapType: MapType.normal,
+                         onMapCreated: (GoogleMapController 
+                           controller) async{
+                             _controller = controller;
+                             await setMapStyle(controller, context);
+                        },
 
-          markers: Set<Marker>.of(markers.values),
-          compassEnabled: true,
-          myLocationEnabled: true,
-        ),
-        SizedBox(
-          height: 26,
-        ),
-      ],
-    );
+                       markers: Set<Marker>.of(markers.values),
+                       compassEnabled: true,
+                       myLocationEnabled: true,
+                       ),
+                       SizedBox(
+                        height: 26,
+                       ),
+                      ],
+                     );
+                }});
   }
+   
 }
 
-List customExercises = ['aaa','bbb'];
 
-void _settingModalBottomSheet(context,String idof){
+
+void _settingModalBottomSheet(context,String idof,String stopname){
     showModalBottomSheet(
+      shape: RoundedRectangleBorder(
+     borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+  ),
       context: context,
       builder: (BuildContext bc){
           return Container(
-            child:StreamBuilder(
+            height: 250,
+            
+            child:new ListView(
+              children: [
+                
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(stopname,textAlign: TextAlign.center,style: TextStyle(fontSize: 20)),
+                ),
+            StreamBuilder(
       stream: FirebaseFirestore.instance.collection('stops').doc(idof).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return new Text("Loading");
+          return Center(child: CircularProgressIndicator());
         }
         var userDocument = snapshot.data;
         
-        return Column(
-  children: [
-    // note the ... spread operator that enables us to add two elements 
-    for (var i = 0; i<userDocument['routes'].length; i++) ...[ 
-           
-      Text(userDocument["routes"][i].toString()),
-      Column(
-        children: [
-          
-          // this creates scat.length many elements inside the Column
-          if(userDocument['times']['$i'].length == 0) Text('n') ,
-          
-          for (var l = 0; l<userDocument['times']['$i'].length; l++)...[
-          
-          Text(userDocument["times"]['$i'][l].toString()),
-          ]
-        ],
-      )
-    ]
-  ],
-);//new Text(userDocument["times"]["0"][0].toString());
-      }
+        
+  return Column(
+    children:[
+      for (var i = 0; i<userDocument['routes'].length; i++) ...[
+     Padding(
+       padding: const EdgeInsets.only(left:4.0,right:4.0),
+       child: Card(
+         color: Colors.blue[600],
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+
+              Padding(
+                padding: const EdgeInsets.all(6.0),
+                child: Icon(Icons.directions_bus_outlined,color: Colors.white,),
+              ),
+              Text((userDocument["routes"][i].toString()),style: TextStyle(fontSize: 25,color: Colors.white,)),
+
+
+            Row(
+              children: [
+
+            // this creates scat.length many elements inside the Column
+            if(userDocument['times']['$i'].length == 0) Text('n') ,
+
+            for (var l = 0; l<userDocument['times']['$i'].length; l++)...[
+
+
+                TextButton(
+                  child: Text(userDocument["times"]['$i'][l].toString(),style: TextStyle(fontSize: 18,color: Colors.white,)),
+                  onPressed: () { /* ... */ },
+                ),
+                const SizedBox(width: 8),
+
+
+              ]]),
+          ],
+        ),
+    ),
+     )],
+    ]);
+}
+        //new Text(userDocument["times"]["0"][0].toString());
+      
   ),
-          );
+              ],));
       }
     );
 }
@@ -219,3 +300,48 @@ children: <Widget>[
       )
     ]
   ],*/
+
+
+  
+
+      /*children: [
+    // note the ... spread operator that enables us to add two elements 
+    for (var i = 0; i<userDocument['routes'].length; i++) ...[ 
+          
+      Text(userDocument["routes"][i].toString()),
+      Column(
+        children: [
+          
+          // this creates scat.length many elements inside the Column
+          if(userDocument['times']['$i'].length == 0) Text('n') ,
+          
+          for (var l = 0; l<userDocument['times']['$i'].length; l++)...[
+          
+          Text(userDocument["times"]['$i'][l].toString()),
+          ]
+        ],
+      )
+    ]
+  ],*/
+
+  /*return Column(
+  children: [
+    // note the ... spread operator that enables us to add two elements 
+    for (var i = 0; i<userDocument['routes'].length; i++) ...[ 
+          
+      Text(userDocument["routes"][i].toString()),
+      Column(
+        children: [
+          
+          // this creates scat.length many elements inside the Column
+          if(userDocument['times']['$i'].length == 0) Text('n') ,
+          
+          for (var l = 0; l<userDocument['times']['$i'].length; l++)...[
+          
+          Text(userDocument["times"]['$i'][l].toString()),
+          ]
+        ],
+      )
+    ]
+  ],
+) */

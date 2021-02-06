@@ -4,9 +4,16 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class Stops extends StatefulWidget {
+class LiveBus extends StatefulWidget {
+
+  
   @override
   _NewMapState createState() => _NewMapState();
+}
+
+class RouteNumber{
+static String route;
+static String routeName;
 }
 
 Future setMapStyle(GoogleMapController controller, BuildContext context) async {
@@ -15,7 +22,9 @@ Future setMapStyle(GoogleMapController controller, BuildContext context) async {
   await controller.setMapStyle(value);
 }
 
-class _NewMapState extends State<Stops> {
+var arr=List();
+
+class _NewMapState extends State<LiveBus> {
   GoogleMapController _controller;
 
   Position position;
@@ -24,55 +33,75 @@ class _NewMapState extends State<Stops> {
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   BitmapDescriptor pinLocationIcon;
- var lat;
+
+  @override
+  void initState() {
+    _child = SpinKitRipple(
+      itemBuilder: (BuildContext context, int index) {
+        return DecoratedBox(
+          decoration: BoxDecoration(
+            color: index.isEven ? Colors.grey : Color(0xffffb838),
+          ),
+        );
+      },
+    );
+
+    getCurrentLocation();
+    populateClients();
+    setCustomMapPin();
+    super.initState();
+  }
+
+  var lat;
   var long;
- Future<Widget> reloadCurrentLocation;
-    
-      @override
-      void initState() {
-        super.initState();
-    
-        reloadCurrentLocation = getCurrentLocation();
+
+  void getCurrentLocation() async {
+    LocationPermission permission;
+
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.deniedForever) {
+      lat = 6.9271;
+      long = 79.8612;
+    } else if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+        lat = 6.9271;
+        long = 79.8612;
       }
-    
-      Future<Widget> getCurrentLocation() async {
-         LocationPermission permission;
-         
-         permission = await Geolocator.checkPermission();
-         if (permission == LocationPermission.deniedForever) {
-           lat=40.7128;long=74.0060;
-         }
-    
-         else if (permission == LocationPermission.denied) {
-           permission = await Geolocator.requestPermission();
-         if (permission != LocationPermission.whileInUse &&
-            permission != LocationPermission.always) {
-            lat=40.7128;long=74.0060;
-            }
-        }
-        else {
-          Position res = await Geolocator.getCurrentPosition(desiredAccuracy: 
-          LocationAccuracy.high); //getCurrentPosition();
-        
-          lat=res.latitude;
-          long=res.longitude;          
-        }
-        
-        populateClients();
-        setCustomMapPin();
-          
-        return _child = mapWidget();
+    } else {
+      Position res = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high); //getCurrentPosition();
+
+      lat = res.latitude;
+      long = res.longitude;
     }
 
+    setState(() {
+      //position = res;
+      //lat=6.9271;long=79.8612;
+      _child = mapWidget();
+    });
+  }
 
   populateClients() async {
-    FirebaseFirestore.instance.collection('stops').get().then((docs) {
-      if (docs.docs.isNotEmpty) {
-        for (int i = 0; i < docs.docs.length; ++i) {
-          initMarker(docs.docs[i].data(), docs.docs[i].id);
-          
-        }
-      }
+    FirebaseFirestore.instance.collection("routes").doc(RouteNumber.route).get().then((value){
+      print(value['order'].length);
+      arr.addAll(value['order']);
+      RouteNumber.routeName=value['number']+' '+value['name'];
+      print(RouteNumber.routeName);
+      int val=value['order'].length;
+      int range=val+1;
+
+     for(int a=0;a<value['order'].length;a++){
+      FirebaseFirestore.instance.collection("stops").doc(arr[a]).get().then((value){
+      
+      initMarker(value, arr[a]);
+      //arr.addAll(value['order']);
+      //print(value[a]['name']);
+    });
+     }
+
     });
   }
 
@@ -105,7 +134,7 @@ class _NewMapState extends State<Stops> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text('Bus Stops'),
+        title: Text(RouteNumber.routeName),
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
@@ -114,49 +143,30 @@ class _NewMapState extends State<Stops> {
   }
 
   Widget mapWidget() {
-    return FutureBuilder(
-                future: reloadCurrentLocation,
-                builder: (context, state) {
-                  if (state.connectionState == ConnectionState.active ||
-                      state.connectionState == ConnectionState.waiting) {
-                      return SpinKitRipple(
-                        itemBuilder: (BuildContext context, int index) {
-                          return DecoratedBox(
-                               decoration: BoxDecoration(
-                               color: index.isEven ? Colors.grey : 
-                                    Color(0xffffb838),
-                               ),
-                          );
-                        },
-                      );
-                  } else {
-                      return Stack(
-                        children: <Widget>[
-                         GoogleMap(
-                           initialCameraPosition: CameraPosition(
-                           target: 
-                           LatLng(lat,long),//(position.latitude, 
-                           //position.longitude),
-                           zoom: 18,
-                         ),
+    return Stack(
+      children: <Widget>[
+        GoogleMap(
+          initialCameraPosition: CameraPosition(
+            target:
+                LatLng(lat, long), //(position.latitude, position.longitude),
+            zoom: 18,
+          ),
 
-                         ///mapType: MapType.normal,
-                         onMapCreated: (GoogleMapController 
-                           controller) async{
-                             _controller = controller;
-                             await setMapStyle(controller, context);
-                        },
+          ///mapType: MapType.normal,
+          onMapCreated: (GoogleMapController controller) async {
+            _controller = controller;
+            await setMapStyle(controller, context);
+          },
 
-                       markers: Set<Marker>.of(markers.values),
-                       compassEnabled: true,
-                       myLocationEnabled: true,
-                       ),
-                       SizedBox(
-                        height: 26,
-                       ),
-                      ],
-                     );
-                }});
+          markers: Set<Marker>.of(markers.values),
+          compassEnabled: true,
+          myLocationEnabled: true,
+        ),
+        SizedBox(
+          height: 26,
+        ),
+      ],
+    );
   }
 }
 
@@ -168,7 +178,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
       context: context,
       builder: (BuildContext bc) {
         return Container(
-            height: 250,
+            height: 170,
             child: new ListView(
               children: [
                 Padding(
@@ -192,6 +202,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                         for (var i = 0;
                             i < userDocument['routes'].length;
                             i++) ...[
+                              if(userDocument["routes"][i].toString()==RouteNumber.routeName)...[
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 4.0, right: 4.0),
@@ -238,7 +249,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                             ),
                           )
                         ],
-                      ]);
+                      ]]);
                     }
                     //new Text(userDocument["times"]["0"][0].toString());
 

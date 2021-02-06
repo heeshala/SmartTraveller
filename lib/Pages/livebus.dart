@@ -4,9 +4,16 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-class Stops extends StatefulWidget {
+class LiveBus extends StatefulWidget {
+
+  
   @override
   _NewMapState createState() => _NewMapState();
+}
+
+class RouteNumber{
+static String route;
+static String routeName='Route';
 }
 
 Future setMapStyle(GoogleMapController controller, BuildContext context) async {
@@ -15,7 +22,9 @@ Future setMapStyle(GoogleMapController controller, BuildContext context) async {
   await controller.setMapStyle(value);
 }
 
-class _NewMapState extends State<Stops> {
+var arr=List();
+
+class _NewMapState extends State<LiveBus> {
   GoogleMapController _controller;
 
   Position position;
@@ -24,7 +33,7 @@ class _NewMapState extends State<Stops> {
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   BitmapDescriptor pinLocationIcon;
- var lat;
+var lat;
   var long;
  Future<Widget> reloadCurrentLocation;
     
@@ -51,11 +60,16 @@ class _NewMapState extends State<Stops> {
             }
         }
         else {
+          try{
           Position res = await Geolocator.getCurrentPosition(desiredAccuracy: 
           LocationAccuracy.high); //getCurrentPosition();
         
           lat=res.latitude;
-          long=res.longitude;          
+          long=res.longitude;
+          }
+          catch(Exception){
+            lat=40.7128;long=74.0060;
+          }          
         }
         
         populateClients();
@@ -66,13 +80,22 @@ class _NewMapState extends State<Stops> {
 
 
   populateClients() async {
-    FirebaseFirestore.instance.collection('stops').get().then((docs) {
-      if (docs.docs.isNotEmpty) {
-        for (int i = 0; i < docs.docs.length; ++i) {
-          initMarker(docs.docs[i].data(), docs.docs[i].id);
-          
-        }
-      }
+    FirebaseFirestore.instance.collection("routes").doc(RouteNumber.route).get().then((value){
+      
+      arr.addAll(value['order']);
+      RouteNumber.routeName=value['number']+' '+value['name'];
+      
+      
+
+     for(int a=0;a<value['order'].length;a++){
+      FirebaseFirestore.instance.collection("stops").doc(arr[a]).get().then((value){
+      
+      initMarker(value, arr[a]);
+      //arr.addAll(value['order']);
+      //print(value[a]['name']);
+    });
+     }
+
     });
   }
 
@@ -105,7 +128,7 @@ class _NewMapState extends State<Stops> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text('Bus Stops'),
+        title: Text(RouteNumber.routeName),
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
@@ -119,12 +142,12 @@ class _NewMapState extends State<Stops> {
                 builder: (context, state) {
                   if (state.connectionState == ConnectionState.active ||
                       state.connectionState == ConnectionState.waiting) {
-                      return SpinKitRipple(
+                      return SpinKitFadingCube(
                         itemBuilder: (BuildContext context, int index) {
                           return DecoratedBox(
                                decoration: BoxDecoration(
-                               color: index.isEven ? Colors.grey : 
-                                    Color(0xffffb838),
+                               color: index.isEven ? Colors.lightBlue[800] : 
+                                    Color(0XFFFFFF),
                                ),
                           );
                         },
@@ -168,7 +191,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
       context: context,
       builder: (BuildContext bc) {
         return Container(
-            height: 250,
+            height: 170,
             child: new ListView(
               children: [
                 Padding(
@@ -192,6 +215,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                         for (var i = 0;
                             i < userDocument['routes'].length;
                             i++) ...[
+                              if(userDocument["routes"][i].toString()==RouteNumber.routeName)...[
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 4.0, right: 4.0),
@@ -238,7 +262,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                             ),
                           )
                         ],
-                      ]);
+                      ]]);
                     }
                     //new Text(userDocument["times"]["0"][0].toString());
 

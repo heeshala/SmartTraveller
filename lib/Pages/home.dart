@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:smart_traveller/Pages/data.dart';
 import 'package:smart_traveller/Pages/routes.dart';
-//import 'package:smart_traveller/Pages/routes.dart';
-import 'package:smart_traveller/Pages/test.dart';
+
+import 'package:smart_traveller/Pages/stops.dart';
+import 'package:smart_traveller/Pages/traveltest.dart';
 
 
 
@@ -38,7 +40,17 @@ class HomePage extends StatelessWidget{
 
       ),
       ListTile(
-        title: Text('Find Bus'),
+        title: Text('Bus Routes'),
+        onTap: () {
+          Navigator.pop(context);
+    Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => Routes())
+  );
+},
+      ),
+      ListTile(
+        title: Text('Bus Stops'),
         onTap: () {
           Navigator.pop(context);
     Navigator.push(

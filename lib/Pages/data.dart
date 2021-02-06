@@ -1,38 +1,75 @@
 import 'package:flutter/material.dart';
 
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-
-
+List<String> intArr = ['1','2','3','4','5'];
+ 
 class Data extends StatelessWidget {
-  
-  Widget build(BuildContext context){
-    return new Scaffold(
-      
-      appBar:new AppBar(
-        title: new Text('Datas'),
+  Widget build (BuildContext context) {
+    
+    
+        return new Scaffold(
+          appBar: new AppBar(
+            title: new Text("Data"),
+          ), 
+      drawer: Drawer(
+    child: ListView(
+    // Important: Remove any padding from the ListView.
+    padding: EdgeInsets.zero,
+    children: <Widget>[
+      DrawerHeader(
+        child: Text('Drawer Header'),
+        decoration: BoxDecoration(
+          color: Colors.blue,
+        ),
       ),
-      body: StreamBuilder(
-    stream: FirebaseFirestore.instance.collection('routes').snapshots(),
-    builder: (context, snapshot){
-      if(!snapshot.hasData){
-        return Center(
-          child: CircularProgressIndicator(),
-        );
-      }
-      return ListView(
-        children: snapshot.data.docs.map<Widget>((document) {
-          return Center(
-            child: Container(
-              width: MediaQuery.of(context).size.width / 1.2,
-              height: MediaQuery.of(context).size.height / 6,
-              child: Text("Title: " + document['order']),
-            ),
-          );
-        }).toList(),
-      );
-    }
+      ListTile(
+        title: Text('Home'),
+        // Within the `FirstRoute` widget
+       onTap: () {
+         _onPressed();
+},
+
+      ),
+      ListTile(
+        title: Text('Bus Routes'),
+        onTap: () {
+          
+},
+      ),
+      ListTile(
+        title: Text('Bus Stops'),
+        onTap: () {
+         
+},
+      ),
+    ],
+  ),
   ),
     );
   }
 }
+
+var arr=List();
+void _onPressed() {
+    
+    FirebaseFirestore.instance.collection("routes").doc('1').get().then((value){
+      print(value['order'].length);
+      arr.addAll(value['order']);
+      print(arr);
+
+     for(int a=1;a<=value['order'].length;a++){
+      FirebaseFirestore.instance.collection("stops").doc(arr[1]).get().then((value){
+      print(value['name']);
+      
+      //arr.addAll(value['order']);
+      //print(arr[3]);
+    });
+     }
+
+    });
+
+
+    
+  }
