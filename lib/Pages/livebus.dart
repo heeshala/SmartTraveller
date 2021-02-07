@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -21,6 +23,8 @@ Future setMapStyle(GoogleMapController controller, BuildContext context) async {
       .loadString('assets/maps/map_style.json');
   await controller.setMapStyle(value);
 }
+//timer
+Timer timer;
 
 var arr=List();
 
@@ -33,6 +37,7 @@ class _NewMapState extends State<LiveBus> {
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   BitmapDescriptor pinLocationIcon;
+  BitmapDescriptor busIcon;
 var lat;
   var long;
  Future<Widget> reloadCurrentLocation;
@@ -40,7 +45,7 @@ var lat;
       @override
       void initState() {
         super.initState();
-    
+        timer = Timer.periodic(Duration(milliseconds: 5000), (Timer t) => refresh());
         reloadCurrentLocation = getCurrentLocation();
       }
     
@@ -62,7 +67,7 @@ var lat;
         else {
           try{
           Position res = await Geolocator.getCurrentPosition(desiredAccuracy: 
-          LocationAccuracy.high); //getCurrentPosition();
+          LocationAccuracy.high); 
         
           lat=res.latitude;
           long=res.longitude;
@@ -81,22 +86,169 @@ var lat;
 
   populateClients() async {
     FirebaseFirestore.instance.collection("routes").doc(RouteNumber.route).get().then((value){
-      
+
       arr.addAll(value['order']);
       RouteNumber.routeName=value['number']+' '+value['name'];
-      
+
+      int val=value['order'].length;
+
+
+      for(int a=0;a<value['order'].length;a++){
+        FirebaseFirestore.instance.collection("stops").doc(arr[a]).get().then((value){
+
+          initMarker(value, arr[a]);
+
+        });
+      }
+
+      travel();
+
+    });
+  }
+
+  //Livebus
+  var buslist=List();
+  void travel(){
+
+
+    buslist.clear();
+    FirebaseFirestore.instance.collection("bus").get().then((value){
       
 
-     for(int a=0;a<value['order'].length;a++){
-      FirebaseFirestore.instance.collection("stops").doc(arr[a]).get().then((value){
-      
-      initMarker(value, arr[a]);
-      //arr.addAll(value['order']);
-      //print(value[a]['name']);
-    });
-     }
+      for(int a=0;a<value.docs.length;a++) {
+        buslist.add(value.docs[a].id);
+      }
 
+      
+      for(int b=0;b<value.docs.length;b++){
+        if(value.docs[b]['route']==RouteNumber.route){
+          if(value.docs[b]['status']=='active'){
+            
+
+            double latitude=double.parse(value.docs[b]['lat']);
+            double longitude=double.parse(value.docs[b]['long']);
+
+            var markerIdVal = value.docs[b].id;
+            final MarkerId markerId = MarkerId(markerIdVal);
+            
+            final Marker marker = Marker(
+              markerId: markerId,
+              position: LatLng(latitude, longitude),
+              icon: busIcon,
+              onTap: () {
+                showModalBottomSheet(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                    ),
+                    context: context,
+                    builder: (BuildContext bc) {
+                      return Container(
+                        height: 140,
+                        
+                        child:
+                        StreamBuilder(
+                          stream: FirebaseFirestore.instance
+                              .collection('bus')
+                              .doc(markerIdVal)
+                              .snapshots(),
+                          builder: (context, snapshot) {
+                            if (!snapshot.hasData) {
+                              return Center(child: CircularProgressIndicator());
+                            }
+                            var userDocument = snapshot.data;
+
+                            return Column(children: [
+
+                              Padding(
+                                padding:
+                                const EdgeInsets.only(top:8.0,left: 4.0, right: 4.0),
+                                child: Card(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+                                  ),
+                                  color: Colors.blue[600],
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(6.0),
+                                        child: Icon(
+                                          Icons.directions_bus_outlined,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                                      Text((markerIdVal),
+                                          style: TextStyle(
+                                            fontSize: 25,
+                                            color: Colors.white,
+                                          )),
+                                      Row(children: [
+                                        // this creates scat.length many elements inside the Column
+
+                                        TextButton(
+                                          child: Text(
+                                              'Passengers '+userDocument['passengers'],
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                              )),
+                                          onPressed: () {/* ... */},
+                                        ),
+                                        const SizedBox(width: 8),
+
+                                        TextButton(
+                                          child: Text(
+                                              'Speed '+userDocument['speed']+' km/h',
+                                              style: TextStyle(
+                                                fontSize: 18,
+                                                color: Colors.white,
+                                              )),
+                                          onPressed: () {/* ... */},
+                                        ),
+                                        const SizedBox(width: 8),
+
+                                      ]),
+                                    ],
+                                  ),
+                                ),
+                              )
+                            ],
+                            );
+                          },
+                        ),
+                        
+                      );
+                    }
+                  
+
+                );
+              },
+            );
+            
+            setState(() {
+              
+              markers[markerId] = marker;
+
+            });
+          }
+        }
+      }
+      
     });
+  }
+
+  void refresh(){
+    if(buslist.isNotEmpty){
+      for(int m=0;m<buslist.length;m++){
+        setState(() {
+          markers.removeWhere((key, marker) => marker.markerId.value == buslist[m]);
+        });
+      }
+
+    }
+
+    travel();
+
   }
 
   void initMarker(tomb, tombId) {
@@ -121,6 +273,10 @@ var lat;
     pinLocationIcon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 10.5),
         'assets/images/bus-stop.png');
+
+        busIcon = await BitmapDescriptor.fromAssetImage(
+        ImageConfiguration(devicePixelRatio: 10.5),
+        'assets/images/bus.png');
   }
 
   @override
@@ -158,8 +314,7 @@ var lat;
                          GoogleMap(
                            initialCameraPosition: CameraPosition(
                            target: 
-                           LatLng(lat,long),//(position.latitude, 
-                           //position.longitude),
+                           LatLng(lat,long),
                            zoom: 18,
                          ),
 
@@ -264,7 +419,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                         ],
                       ]]);
                     }
-                    //new Text(userDocument["times"]["0"][0].toString());
+                    
 
                     ),
               ],

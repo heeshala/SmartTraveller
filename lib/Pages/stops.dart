@@ -119,12 +119,12 @@ class _NewMapState extends State<Stops> {
                 builder: (context, state) {
                   if (state.connectionState == ConnectionState.active ||
                       state.connectionState == ConnectionState.waiting) {
-                      return SpinKitRipple(
+                      return SpinKitFadingCube(
                         itemBuilder: (BuildContext context, int index) {
                           return DecoratedBox(
                                decoration: BoxDecoration(
-                               color: index.isEven ? Colors.grey : 
-                                    Color(0xffffb838),
+                               color: index.isEven ?  Colors.lightBlue[800]: 
+                                    Color(0XFFFFFF),
                                ),
                           );
                         },
