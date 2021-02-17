@@ -125,7 +125,7 @@ Theme(
                Navigator.pop(context);
     Navigator.push(
     context,
-    MaterialPageRoute(builder: (context) => TravelPass())
+    MaterialPageRoute(builder: (context) => NfcScan())
 
   );
 },

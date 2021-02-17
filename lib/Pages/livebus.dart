@@ -45,7 +45,7 @@ var lat;
       @override
       void initState() {
         super.initState();
-        timer = Timer.periodic(Duration(milliseconds: 5000), (Timer t) => refresh());
+        timer = Timer.periodic(Duration(milliseconds: 1000), (Timer t) => refresh());
         reloadCurrentLocation = getCurrentLocation();
       }
     
@@ -136,6 +136,7 @@ var lat;
               position: LatLng(latitude, longitude),
               icon: busIcon,
               onTap: () {
+                 
                 showModalBottomSheet(
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
@@ -198,7 +199,7 @@ var lat;
 
                                         TextButton(
                                           child: Text(
-                                              'Speed '+userDocument['speed']+' km/h',
+                                              'Speed '+userDocument['speed'].toString().substring(0,4)+' km/h',
                                               style: TextStyle(
                                                 fontSize: 18,
                                                 color: Colors.white,
