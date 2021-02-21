@@ -1,13 +1,13 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
+import 'dart:math';
 
 import 'package:google_fonts/google_fonts.dart';
 
 
-/*class TravelPass extends StatelessWidget {
- 
-}*/
 
 
 
@@ -20,6 +20,8 @@ class NfcScan extends StatefulWidget {
 
 String cardId;
 String status="Tap Your Travel Pass";
+String balance="";
+IconData nfcIcon=Icons.cast;
 
 class _NfcScanState extends State<NfcScan> {
   
@@ -41,7 +43,7 @@ class _NfcScanState extends State<NfcScan> {
             backgroundColor: Colors.blue,
             leading: IconButton(
               icon: Icon(Icons.arrow_back, color: Colors.white),
-              onPressed: () => Navigator.of(context).pop(),
+              onPressed: () => back(),
             ),
           ),
           body: bodyWidget(),
@@ -58,10 +60,11 @@ class _NfcScanState extends State<NfcScan> {
     FlutterNfcReader.onTagDiscovered().listen((onData) {
       setState(() {
         status="Reading...";
+        balance="";
       });
       
       
-      print(onData.id);
+      
       cardId=onData.id.toString();
       checkcard();
       
@@ -77,55 +80,85 @@ class _NfcScanState extends State<NfcScan> {
   }
 
   Widget bodyWidget(){
-    return Column(
-      children: <Widget>[
-        
-        Text('$status'),
-        Image.asset('assets/images/tapnfc.png',
-                        width: 250,
-                        height: 400,),
-        
-      ],
+    return Center(
+      child: Container(
+        child: Column(
+          children: <Widget>[
+
+            Padding(
+              padding: const EdgeInsets.only(top: 50.00),
+
+              child: Text('$status',style: TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 20,)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 50.00),
+
+              child: Text('$balance',style: TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 20,)),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 60.00),
+              child: Transform.rotate(angle: 270 * pi/180,child: Icon(nfcIcon, color: Colors.blue,size: 150,)),
+            ),
+            
+
+
+          ],
+        ),
+      ),
     );
   }
 
-  //@override
-  /*Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        
-        Text('$status'),
-        Image.asset('assets/images/tapnfc.png',
-                        width: 250,
-                        height: 400,),
-        
-      ],
-    );
-  }*/
+  
 void checkcard(){
   
   print("checking");
-  String user;
+ 
   String money;
+  bool found=false;
   FirebaseFirestore.instance.collection("passenger").get().then((value){
       
 
       for(int a=0;a<value.docs.length;a++) {
-        if(cardId==value.docs[a]["rfid"]){
-           print(value.docs[a]["credits"]);
+        if(cardId==value.docs[a]["nfc"]){
+           
            money=value.docs[a]["credits"].toString();
+           found=true;
            break;
            
         }
         
       }
-
-      setState(() {
-        status=money;
+      double m=double.parse(money);
+      money=(m).toStringAsFixed(2);
+      
+       if(found){
+        setState(() {
+        status="Remaining Credit Amount";
+        balance="Rs."+money;
+        nfcIcon=Icons.cast_connected;
       });
+       }
+       else{
+         setState(()  {
+        
+        
+        status="Tap Your Travel Pass";
+      });
+      
+      
+      
+       }
+      
       
   });
 
+}
+
+void back(){
+  Navigator.of(context).pop();
+  status="Tap Your Travel Pass";
+ balance="";
+ nfcIcon=Icons.cast;
 }
 
 
