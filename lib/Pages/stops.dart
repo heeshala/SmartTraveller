@@ -54,7 +54,7 @@ class _NewMapState extends State<Stops> {
         }
         else {
           Position res = await Geolocator.getCurrentPosition(desiredAccuracy: 
-          LocationAccuracy.high); //getCurrentPosition();
+          LocationAccuracy.high); 
         
           lat=res.latitude;
           long=res.longitude;          
@@ -137,8 +137,7 @@ class _NewMapState extends State<Stops> {
                          GoogleMap(
                            initialCameraPosition: CameraPosition(
                            target: 
-                           LatLng(lat,long),//(position.latitude, 
-                           //position.longitude),
+                           LatLng(lat,long),
                            zoom: 18,
                          ),
 
@@ -243,7 +242,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                         ],
                       ]);
                     }
-                    //new Text(userDocument["times"]["0"][0].toString());
+                    
 
                     ),
               ],

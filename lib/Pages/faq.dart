@@ -190,6 +190,24 @@ class Faq extends StatelessWidget {
                 contentBackgroundColor: Colors.blueGrey[50],
                 textStyle: TextStyle(color: Colors.white),
               ),
+              //10
+              GFAccordion(
+                title: 'How can I contact Smart Traveller ?',
+                content:
+                    'You can tap the telephonebooth or the mailbox in the Home Screen',
+                collapsedIcon: Icon(
+                  Icons.arrow_drop_down_outlined,
+                  color: Colors.white,
+                ),
+                expandedIcon: Icon(
+                  Icons.arrow_drop_up_outlined,
+                  color: Colors.white,
+                ),
+                collapsedTitleBackgroundColor: Colors.blueAccent,
+                expandedTitleBackgroundColor: Colors.lightBlue[300],
+                contentBackgroundColor: Colors.blueGrey[50],
+                textStyle: TextStyle(color: Colors.white),
+              ),
 
             ],
           )),
