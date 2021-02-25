@@ -16,10 +16,13 @@ class HomePage extends StatefulWidget {
 
 class _NewHomeState extends State<HomePage> {
   Image myImage;
+
   @override
   void initState() {
     myImage = Image.asset("assets/images/background.png");
     super.initState();
+    //
+    //
   }
 
   @override
@@ -146,74 +149,82 @@ class _NewHomeState extends State<HomePage> {
   }
 
   Widget bodyWidget(BuildContext context) {
+    double displayWidth = MediaQuery.of(context).size.width;
+    double displayHeight = MediaQuery.of(context).size.height;
     return Center(
       child: Container(
-          constraints: BoxConstraints.expand(),
+          height: displayHeight,
+          width: displayWidth,
           decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage("assets/images/background.png"),
-                  fit: BoxFit.cover)),
-          child: Column(children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(top: 30.00),
+                  fit: BoxFit.fill)),
+          child: Stack(children: <Widget>[
+            Positioned(
+              top: displayHeight * 0.04,
+              left: displayWidth * 0.11,
               child: Text(
-                'Smartest way to get',
+                'Smartest way to get ',
                 style: GoogleFonts.philosopher(
                   textStyle: TextStyle(
                       color: Colors.blue[900],
                       letterSpacing: .5,
-                      fontSize: 25,
+                      fontSize: displayWidth * 0.07,
                       fontWeight: FontWeight.bold),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 5.00),
+            Positioned(
+              top: displayHeight * 0.09,
+              left: displayWidth * 0.16,
               child: Text(
                 'around Sri Lanka',
                 style: GoogleFonts.philosopher(
                   textStyle: TextStyle(
                       color: Colors.blue[900],
                       letterSpacing: .5,
-                      fontSize: 25,
+                      fontSize: displayWidth * 0.07,
                       fontWeight: FontWeight.bold),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.00),
+            Positioned(
+              top: displayHeight * 0.18,
+              left: displayWidth * 0.06,
               child: Text(
                 'No more need of pennies',
                 style: GoogleFonts.philosopher(
                   textStyle: TextStyle(
                       color: Colors.teal[900],
                       letterSpacing: .5,
-                      fontSize: 25,
+                      fontSize: displayWidth * 0.07,
                       fontWeight: FontWeight.w600),
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20.00),
+            Positioned(
+              top: displayHeight * 0.26,
+              left: displayWidth * 0.25,
               child: Text(
                 'Just TAP & GO',
                 style: GoogleFonts.philosopher(
                   textStyle: TextStyle(
                       color: Colors.red[800],
                       letterSpacing: .5,
-                      fontSize: 25,
+                      fontSize: displayWidth * 0.07,
                       fontWeight: FontWeight.w600),
                 ),
               ),
             ),
-
-            Padding(
-              padding: const EdgeInsets.only(top: 53.0, right: 168.0),
+            //Live Tracking
+            Positioned(
+              top: displayHeight * 0.408,
+              left: displayWidth * 0.09,
               child: ButtonTheme(
                 buttonColor: Color.fromRGBO(246, 175, 73, 1),
                 child: Container(
-                  height: 20.0,
-                  width: 120,
+                  height: displayHeight * 0.042,
+                  width: displayWidth * 0.35,
                   child: RaisedButton(
                       onPressed: () {
                         Navigator.push(context,
@@ -224,8 +235,10 @@ class _NewHomeState extends State<HomePage> {
                           Expanded(
                             child: Marquee(
                               text: "Live Tracking",
-                              style:
-                                  TextStyle(fontSize: 18, color: Colors.white),
+                              style: GoogleFonts.philosopher(
+                                  textStyle: TextStyle(
+                                      fontSize: displayWidth * 0.06,
+                                      color: Colors.white)),
                               scrollAxis: Axis.horizontal,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               blankSpace: 20.0,
@@ -239,11 +252,14 @@ class _NewHomeState extends State<HomePage> {
             ),
 
             //Telephone
-            Padding(
-                padding: const EdgeInsets.only(top: 30.00, left: 260.0),
+            Positioned(
+                bottom: displayHeight * 0.18,
+                right: displayWidth * 0.05,
                 child: FlatButton(
-                  minWidth: 63.0,
-                  height: 120.0,
+                  minWidth: displayWidth * 0.17,
+                  height: displayHeight * 0.2,
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   onPressed: _makingPhoneCall,
                   child: Text(
                     "",
@@ -251,11 +267,14 @@ class _NewHomeState extends State<HomePage> {
                 )),
 
             //Mail
-            Padding(
-                padding: const EdgeInsets.only(top: 15.00, left: 265.0),
+            Positioned(
+                bottom: displayHeight * 0.05,
+                right: displayWidth * 0.05,
                 child: FlatButton(
-                  minWidth: 60.0,
-                  height: 60.0,
+                  minWidth: displayWidth * 0.17,
+                  height: displayHeight * 0.10,
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
                   onPressed: _sendMail,
                   child: Text(
                     "",
@@ -276,9 +295,9 @@ class _NewHomeState extends State<HomePage> {
     final Uri _emailLaunchUri = Uri(
         scheme: 'mailto',
         path: 'contact@smarttraveller.com',
-        queryParameters: {'subject': 'Mobile App Inquiry'});
+        queryParameters: {'subject': 'Mobile Application Inquiry'});
 
-    var url = _emailLaunchUri.toString();
+    var url = _emailLaunchUri.toString().replaceAll("+", "%20");
     if (await canLaunch(url)) {
       await launch(url);
     }
