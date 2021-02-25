@@ -55,7 +55,9 @@ class _NfcScanState extends State<NfcScan> {
   @override
   initState() {
     super.initState();
-   
+   status="Tap Your Travel Pass";
+ balance="";
+ nfcIcon=Icons.cast;
     
     FlutterNfcReader.onTagDiscovered().listen((onData) {
       setState(() {
