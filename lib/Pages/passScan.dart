@@ -26,6 +26,7 @@ IconData nfcIcon=Icons.cast;
 class _NfcScanState extends State<NfcScan> {
   
    Widget build(BuildContext context) {
+     double displayWidth = MediaQuery.of(context).size.width;
     return MaterialApp(
       home: DefaultTabController(
         length: 2,
@@ -90,13 +91,34 @@ class _NfcScanState extends State<NfcScan> {
             Padding(
               padding: const EdgeInsets.only(top: 50.00),
 
-              child: Text('$status',style: TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 20,)),
-            ),
+              child:Text(
+                '$status',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.philosopher(
+                  textStyle: TextStyle(
+                      color: Colors.blue[900],
+                      letterSpacing: .5,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      ),
+                 
+            ))),
             Padding(
               padding: const EdgeInsets.only(top: 50.00),
 
-              child: Text('$balance',style: TextStyle(color: Colors.black, letterSpacing: .5, fontSize: 20,)),
-            ),
+              child: Text(
+                '$balance',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.philosopher(
+                  textStyle: TextStyle(
+                      color: Colors.teal[900],
+                      letterSpacing: .5,
+                      fontSize: 30,
+                      fontWeight: FontWeight.bold,
+                      ),
+                 
+            ))),
+            
             Padding(
               padding: const EdgeInsets.only(top: 60.00),
               child: Transform.rotate(angle: 270 * pi/180,child: Icon(nfcIcon, color: Colors.blue,size: 150,)),
@@ -113,13 +135,15 @@ class _NfcScanState extends State<NfcScan> {
   
 void checkcard(){
   
-  print("checking");
+  
  
   String money;
   bool found=false;
+  
   FirebaseFirestore.instance.collection("passenger").get().then((value){
       
 
+      
       for(int a=0;a<value.docs.length;a++) {
         if(cardId==value.docs[a]["nfc"]){
            
@@ -130,8 +154,12 @@ void checkcard(){
         }
         
       }
+      
+      if(money!=null){
       double m=double.parse(money);
       money=(m).toStringAsFixed(2);
+      }
+      
       
        if(found){
         setState(() {
@@ -145,6 +173,7 @@ void checkcard(){
         
         
         status="Tap Your Travel Pass";
+        nfcIcon=Icons.cast;
       });
       
       
