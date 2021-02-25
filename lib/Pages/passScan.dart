@@ -26,7 +26,7 @@ IconData nfcIcon=Icons.cast;
 class _NfcScanState extends State<NfcScan> {
   
    Widget build(BuildContext context) {
-     double displayWidth = MediaQuery.of(context).size.width;
+     
     return MaterialApp(
       home: DefaultTabController(
         length: 2,
@@ -76,8 +76,8 @@ class _NfcScanState extends State<NfcScan> {
 
   @override
   void dispose() {
-    // Clean up the controller when the widget is removed from the
-    // widget tree.
+    // Clean up the controller when the widget is removed from the widget tree.
+    
     
     super.dispose();
   }
