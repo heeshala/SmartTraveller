@@ -162,9 +162,12 @@ class _NewHomeState extends State<HomePage> {
           child: Stack(children: <Widget>[
             Positioned(
               top: displayHeight * 0.04,
-              left: displayWidth * 0.11,
+              
+              left: 0,
+              right: 0,
               child: Text(
                 'Smartest way to get ',
+                textAlign: TextAlign.center,
                 style: GoogleFonts.philosopher(
                   textStyle: TextStyle(
                       color: Colors.blue[900],
@@ -176,9 +179,12 @@ class _NewHomeState extends State<HomePage> {
             ),
             Positioned(
               top: displayHeight * 0.09,
-              left: displayWidth * 0.16,
+              
+              left: 0,
+              right: 0,
               child: Text(
                 'around Sri Lanka',
+                textAlign: TextAlign.center,
                 style: GoogleFonts.philosopher(
                   textStyle: TextStyle(
                       color: Colors.blue[900],
@@ -190,9 +196,12 @@ class _NewHomeState extends State<HomePage> {
             ),
             Positioned(
               top: displayHeight * 0.18,
-              left: displayWidth * 0.06,
+              
+              left: 0,
+              right: 0,
               child: Text(
                 'No more need of pennies',
+                textAlign: TextAlign.center,
                 style: GoogleFonts.philosopher(
                   textStyle: TextStyle(
                       color: Colors.teal[900],
@@ -204,9 +213,12 @@ class _NewHomeState extends State<HomePage> {
             ),
             Positioned(
               top: displayHeight * 0.26,
-              left: displayWidth * 0.25,
+              
+              left: 0,
+              right: 0,
               child: Text(
                 'Just TAP & GO',
+                textAlign: TextAlign.center,
                 style: GoogleFonts.philosopher(
                   textStyle: TextStyle(
                       color: Colors.red[800],
