@@ -161,6 +161,7 @@ class _NewMapState extends State<Stops> {
   }
 }
 
+
 void _settingModalBottomSheet(context, String idof, String stopname) {
   showModalBottomSheet(
       shape: RoundedRectangleBorder(
@@ -214,12 +215,25 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                         fontSize: 25,
                                         color: Colors.white,
                                       )),
-                                  Row(children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
                                     // this creates scat.length many elements inside the Column
                                     if (userDocument['times']['$i'].length == 0)
-                                      Center(child: CircularProgressIndicator()),
-
-                                    for (var l = 0;
+                                    
+                                      Center( child:TextButton(
+                                        
+                                        child: Text(
+                                            'No Bus Scheduled',
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                            )),
+                                        onPressed: () {/* ... */},
+                                      )),//add text here
+                                     
+                                    if(userDocument['times']['$i'].length<4)...[
+                                       for (var l = 0;
                                         l < userDocument['times']['$i'].length;
                                         l++) ...[
                                       TextButton(
@@ -234,6 +248,27 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                       ),
                                       const SizedBox(width: 8),
                                     ]
+                                    ]
+                                    else...[
+                                      for (var l = 0;
+                                        l < 4;
+                                        l++) ...[
+                                      TextButton(
+                                        child: Text(
+                                            userDocument["times"]['$i'][l]
+                                                .toString(),
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.white,
+                                            )),
+                                        onPressed: () {/* ... */},
+                                      ),
+                                      const SizedBox(width: 8),
+                                    ]
+                                    ]
+                                          
+                                     
+                                    
                                   ]),
                                 ],
                               ),
