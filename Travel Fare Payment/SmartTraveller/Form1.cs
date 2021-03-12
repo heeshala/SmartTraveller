@@ -67,9 +67,10 @@ namespace SmartTraveller
                 QuerySnapshot snapshot = await query.GetSnapshotAsync();
                 foreach (DocumentSnapshot document in snapshot.Documents)
                 {
-
+                    Bus b = document.ConvertTo<Bus>();
                     StaticClass.bus = document.Id;
                     StaticClass.busRfid = txtLogin.Text;
+                    StaticClass.busOwner = b.creditor;
                     bus = true;
                     break;
                 }
@@ -247,6 +248,8 @@ namespace SmartTraveller
                             await busdoc.UpdateAsync("passengers", FieldValue.Increment(-1));
                             await passdoc.UpdateAsync("credits", FieldValue.Increment(price));
                             await passdoc.UpdateAsync("travelling", "No");
+                            DocumentReference agentdoc = database.Collection("agent").Document(StaticClass.busOwner);
+                            await agentdoc.UpdateAsync("credits", FieldValue.Increment(price*-1));
 
                             pnlIdentifyPassenger.Hide();
                             pnlThank.Show();
@@ -281,6 +284,15 @@ namespace SmartTraveller
                 {
                     DocumentReference passdoc = database.Collection("passenger").Document(pasid);
                     await passdoc.UpdateAsync("credits", FieldValue.Increment(-30));
+                    await passdoc.UpdateAsync("travelling", "No");
+                    DocumentReference busdoc = database.Collection("bus").Document(travel);
+                    await busdoc.UpdateAsync("onbus", FieldValue.ArrayRemove(txtPassengerId.Text));
+                    await busdoc.UpdateAsync("passengers", FieldValue.Increment(-1));
+                    DocumentSnapshot snapshot = await busdoc.GetSnapshotAsync();
+                    Bus bus = snapshot.ConvertTo<Bus>();
+                    string creditor = bus.creditor;
+                    DocumentReference cred = database.Collection("agent").Document(creditor);
+                    await cred.UpdateAsync("credits", FieldValue.Increment(30));
                     pnlIdentifyPassenger.Hide();
                     pnlAlert.Show();
                     

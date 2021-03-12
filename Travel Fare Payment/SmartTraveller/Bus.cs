@@ -25,8 +25,11 @@ namespace SmartTraveller
 
         [FirestoreProperty]
         public string speed { get; set; }
-        
-        
+
+        [FirestoreProperty]
+        public string creditor { get; set; }
+
+
 
 
     }
