@@ -5,4 +5,5 @@ class Data{
   static String passenger;
   static String agentBalance;
   static String contact;
+  static String userId;
 }

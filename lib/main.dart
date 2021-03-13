@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:travelpass_recharge/pages/data.dart';
 import 'package:travelpass_recharge/pages/home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelpass_recharge/pages/user.dart';
@@ -10,6 +11,7 @@ Future<void> main() async {
    await Firebase.initializeApp();
    SharedPreferences prefs = await SharedPreferences.getInstance();
       var userId = prefs.getString('userID');
+      Data.userId=userId;
       
   runApp(MaterialApp(home: userId == null ? Home() : User()));
 }

@@ -8,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:travelpass_recharge/pages/data.dart';
 import 'package:travelpass_recharge/pages/home.dart';
+import 'package:travelpass_recharge/pages/personalProfile.dart';
 import 'package:travelpass_recharge/pages/recharge.dart';
 import 'package:travelpass_recharge/pages/changePass.dart';
  var userId;
@@ -90,7 +91,23 @@ IconData nfcIcon=Icons.cast;
                     },
                   ),
                 ),
-                
+                Theme(
+                  data: ThemeData(
+                    splashColor: Colors.lightBlueAccent,
+                    highlightColor: Colors.blue.withOpacity(.3),
+                  ),
+                  child: ListTile(
+                    title: Text(
+                      'Profile',
+                      style: TextStyle(fontSize: 15),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => Profile()));
+                    },
+                  ),
+                ),
                 
                 Theme(
                   data: ThemeData(
