@@ -23,17 +23,7 @@ class Routes extends StatelessWidget {
                   ),
                 ],
               ),
-              title: Row(
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),
+              title: 
                   Text(
                     "Routes",
                     style: GoogleFonts.pacifico(
@@ -41,8 +31,13 @@ class Routes extends StatelessWidget {
                           color: Colors.white, letterSpacing: .5, fontSize: 20),
                     ),
                   ),
-                ],
-              )),
+                
+              centerTitle: true,
+            backgroundColor: Colors.blue,
+              leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => Navigator.of(context).pop(),
+            ),),
           body: TabBarView(
             children: [
               StreamBuilder(

@@ -46,6 +46,7 @@ dependencies:
   animated_splash_screen: ^1.0.1+2
   animated_text_kit: ^3.1.2
   url_launcher: ^5.7.10
+  cool_alert: ^1.0.3
   
   
 

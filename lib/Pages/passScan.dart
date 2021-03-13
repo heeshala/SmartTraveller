@@ -1,6 +1,7 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cool_alert/cool_alert.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'dart:math';
@@ -175,7 +176,12 @@ void checkcard(){
         status="Tap Your Travel Pass";
         nfcIcon=Icons.cast;
       });
-      
+      CoolAlert.show(
+          context: context,
+          type: CoolAlertType.error,
+          text: "Invalid Travel Pass",
+         
+        );
       
       
        }
