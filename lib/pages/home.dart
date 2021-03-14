@@ -6,12 +6,15 @@ import 'package:travelpass_recharge/pages/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 import 'package:url_launcher/url_launcher.dart';
+import 'package:cool_alert/cool_alert.dart';
 
 
 class Home extends StatelessWidget {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   Widget build(BuildContext context) {
+    double displayWidth = MediaQuery.of(context).size.width;
+    double displayHeight = MediaQuery.of(context).size.height;
     return MaterialApp(
       home: Scaffold(
           appBar: AppBar(
@@ -25,9 +28,12 @@ class Home extends StatelessWidget {
             centerTitle: true,
             backgroundColor: Colors.blue,
           ),
-          body: Padding(
-              padding: EdgeInsets.all(10),
-              child: ListView(
+          body:Container(
+            height: displayHeight,
+          width: displayWidth,
+            child: Padding(
+             padding: EdgeInsets.fromLTRB(10, displayHeight*0.07, 10, 0),
+              child: ListView( 
                 children: <Widget>[
                   Container(
                       alignment: Alignment.center,
@@ -59,12 +65,13 @@ class Home extends StatelessWidget {
                   ),
                   
                   Container(
-                      height: 50,
-                      padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                      height: displayHeight*0.14,
+                      
+                      padding: EdgeInsets.fromLTRB(displayWidth*0.2, 30, displayWidth*0.2, 0),
                       child: RaisedButton(
                         textColor: Colors.white,
                         color: Colors.blue,
-                        child: Text('Login'),
+                        child: Text('Login' , style: TextStyle(fontSize: 20,color: Colors.white,fontWeight:FontWeight.bold),),
                         onPressed: () async {
                           auth(nameController.text, passwordController.text,
                               context);
@@ -86,7 +93,7 @@ class Home extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                   ))
                 ],
-              )),
+              )),),
               ),
     );
   }
@@ -102,6 +109,9 @@ class Home extends StatelessWidget {
 bool found = false;
 
 void auth(String userID, String pass, BuildContext context) async {
+
+if(userID.length>0 && pass.length>0){
+
   String decrypt=EncryptString( pass);
   
   SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -117,15 +127,34 @@ void auth(String userID, String pass, BuildContext context) async {
 
           break;
         } else {
-          print("pass not match");
+          CoolAlert.show(
+          context: context,
+          type: CoolAlertType.error,
+          text: "Password Did Not Match",
+         
+        );
           break;
         }
       }
     }
     if (!found) {
-      print("Incorrect ID");
+     CoolAlert.show(
+          context: context,
+          type: CoolAlertType.error,
+          text: "Incorrect UserName",
+         
+        );
     }
   });
+}
+else{
+  CoolAlert.show(
+          context: context,
+          type: CoolAlertType.warning,
+          text: "Fill all the fields",
+         
+        );
+}
 }
 
 
