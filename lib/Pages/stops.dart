@@ -42,14 +42,16 @@ class _NewMapState extends State<Stops> {
          
          permission = await Geolocator.checkPermission();
          if (permission == LocationPermission.deniedForever) {
-           lat=40.7128;long=74.0060;
+           lat = 6.9271;
+        long = 79.8612;
          }
     
          else if (permission == LocationPermission.denied) {
            permission = await Geolocator.requestPermission();
          if (permission != LocationPermission.whileInUse &&
             permission != LocationPermission.always) {
-            lat=40.7128;long=74.0060;
+            lat = 6.9271;
+        long = 79.8612;
             }
         }
         else {

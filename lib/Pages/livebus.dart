@@ -52,16 +52,17 @@ class _NewMapState extends State<LiveBus> {
   Future<Widget> getCurrentLocation() async {
     LocationPermission permission;
 
+    
     permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.deniedForever) {
-      lat = 40.7128;
-      long = 74.0060;
+      lat = 6.9271;
+      long = 79.8612;
     } else if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission != LocationPermission.whileInUse &&
           permission != LocationPermission.always) {
-        lat = 40.7128;
-        long = 74.0060;
+        lat = 6.9271;
+        long = 79.8612;
       }
     } else {
       try {
@@ -71,8 +72,8 @@ class _NewMapState extends State<LiveBus> {
         lat = res.latitude;
         long = res.longitude;
       } catch (Exception) {
-        lat = 40.7128;
-        long = 74.0060;
+        lat = 6.9271;
+        long = 79.8612;
       }
     }
 
@@ -83,6 +84,7 @@ class _NewMapState extends State<LiveBus> {
   }
 
   populateClients() async {
+    arr.clear();
     FirebaseFirestore.instance
         .collection("routes")
         .doc(RouteNumber.route)
@@ -123,6 +125,7 @@ class _NewMapState extends State<LiveBus> {
             double longitude = double.parse(value.docs[b]['lon']);
 
             var markerIdVal = value.docs[b].id;
+            print(markerIdVal);
             final MarkerId markerId = MarkerId(markerIdVal);
 
             final Marker marker = Marker(
@@ -273,14 +276,28 @@ class _NewMapState extends State<LiveBus> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: Colors.white),
+        
         title: Text(RouteNumber.routeName),
         centerTitle: true,
         backgroundColor: Colors.blue,
+        leading: IconButton(
+              icon: Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => {
+                timer.cancel(),
+                Navigator.of(context).pop(),
+              }
+            ),
       ),
       body: mapWidget(),
     );
   }
+
+ @override
+  void dispose() {
+    timer.cancel();
+    super.dispose();
+  }
+ 
 
   Widget mapWidget() {
     return FutureBuilder(

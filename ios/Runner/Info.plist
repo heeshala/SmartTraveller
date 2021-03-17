@@ -41,7 +41,8 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
-     
+     <key>NSLocationWhenInUseUsageDescription</key>
+<string>SmartTraveller needs access to your location.</string>
 	 
 
 </dict>
