@@ -32,7 +32,7 @@ class Home extends StatelessWidget {
             height: displayHeight,
           width: displayWidth,
             child: Padding(
-             padding: EdgeInsets.fromLTRB(10, displayHeight*0.07, 10, 0),
+             padding: EdgeInsets.fromLTRB(10, displayHeight*0.16, 10, 0),
               child: ListView( 
                 children: <Widget>[
                   Container(
@@ -65,7 +65,7 @@ class Home extends StatelessWidget {
                   ),
                   
                   Container(
-                      height: displayHeight*0.14,
+                      height: displayHeight*0.09,
                       
                       padding: EdgeInsets.fromLTRB(displayWidth*0.2, 30, displayWidth*0.2, 0),
                       child: RaisedButton(

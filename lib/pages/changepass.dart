@@ -30,6 +30,9 @@ class ChangePass extends StatelessWidget {
             ),
             centerTitle: true,
             backgroundColor: Colors.blue,
+            leading: IconButton(icon: Icon(Icons.arrow_back,color: Colors.white,),
+            onPressed: () =>{ 
+            }),
           ),
           body: Padding(
               padding: EdgeInsets.all(10),

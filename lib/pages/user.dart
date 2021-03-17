@@ -26,11 +26,10 @@ class User extends StatefulWidget {
 class _NfcScanState extends State<User> {
   
  String status="Tap Travel Pass";
- String balance="";
 IconData nfcIcon=Icons.cast;
 
    Widget build(BuildContext context) {
-    
+   
     return MaterialApp(
       home:Scaffold(
           appBar: AppBar(
@@ -70,9 +69,9 @@ IconData nfcIcon=Icons.cast;
                   ),
                   decoration: BoxDecoration(
                       color: Colors.blue,
-                      /*image: DecorationImage(
-                          image: AssetImage("assets/images/nav.png"),
-                          fit: BoxFit.cover)*/),
+                      image: DecorationImage(
+                          image: AssetImage("assets/images/nav.jpeg"),
+                          fit: BoxFit.cover)),
                 ),
                 Theme(
                   data: ThemeData(
@@ -105,6 +104,7 @@ IconData nfcIcon=Icons.cast;
                       Navigator.pop(context);
                       Navigator.push(context,
                           MaterialPageRoute(builder: (context) => Profile()));
+                          
                     },
                   ),
                 ),
@@ -178,17 +178,18 @@ IconData nfcIcon=Icons.cast;
     
    status="Tap Travel Pass";
    
- balance="";
+ 
  nfcIcon=Icons.cast;
     
     FlutterNfcReader.onTagDiscovered().listen((onData) {
       setState(() {
         status="Reading...";
-        balance="";
+        
+        
       });
       
       
-      
+      print(onData.id.toString());
       Data.cardId=onData.id.toString();
       checkcard();
       
@@ -225,24 +226,10 @@ IconData nfcIcon=Icons.cast;
                       ),
                  
             ))),
-            Padding(
-              padding: const EdgeInsets.only(top: 50.00),
-
-              child: Text(
-                '$balance',
-                textAlign: TextAlign.center,
-                style: GoogleFonts.philosopher(
-                  textStyle: TextStyle(
-                      color: Colors.teal[900],
-                      letterSpacing: .5,
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      ),
-                 
-            ))),
+            
             
             Padding(
-              padding: const EdgeInsets.only(top: 30.00),
+              padding: const EdgeInsets.only(top: 70.00),
               child: Transform.rotate(angle: 270 * pi/180,child: Icon(nfcIcon, color: Colors.blue,size: 150,)),
             ),
             
@@ -261,7 +248,7 @@ void checkcard(){
  
   
   bool found=false;
-  print(found);
+  
   FirebaseFirestore.instance.collection("passenger").get().then((value){
       
     
@@ -315,7 +302,7 @@ void checkcard(){
 void back(){
   Navigator.of(context).pop();
   status="Tap Your Travel Pass";
- balance="";
+
  nfcIcon=Icons.cast;
 }
 

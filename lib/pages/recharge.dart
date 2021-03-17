@@ -69,6 +69,7 @@ Data.agentBalance=null;
             ),
             centerTitle: true,
             backgroundColor: Colors.blue,
+            
           ),
           body: WillPopScope(
             onWillPop: _onBackPressed,

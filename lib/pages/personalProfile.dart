@@ -15,7 +15,7 @@ class Profile extends StatefulWidget {
   Widget build(BuildContext context) {
     double m;
     String money;
-
+     
 
     
     return MaterialApp(
@@ -48,7 +48,9 @@ class Profile extends StatefulWidget {
         iconTheme: IconThemeData(color: Colors.white),
         title: Text('Bus Stops',style:GoogleFonts.pacifico(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 20),),),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.blue,leading: IconButton(icon: Icon(Icons.arrow_back,color: Colors.white,),
+            onPressed: () => Navigator.of(context).pop(),),
+
       ),
           body: Padding(
               padding: EdgeInsets.all(10),
@@ -72,7 +74,7 @@ class Profile extends StatefulWidget {
             StreamBuilder(
                     stream: FirebaseFirestore.instance
                         .collection('agent')
-                        .doc('123456789V')
+                        .doc(Data.userId)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (!snapshot.hasData) {
@@ -80,7 +82,7 @@ class Profile extends StatefulWidget {
                       }
                       var userDocument = snapshot.data;
                       m=userDocument["credits"];
-                      print("mmmm");
+                      
                      money=(m).toStringAsFixed(2);
                       return Column(children: [
             Padding(

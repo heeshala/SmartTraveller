@@ -61,7 +61,7 @@ TwilioFlutter twilioFlutter;
   initState() {
      twilioFlutter = TwilioFlutter(
       accountSid: 'AC68bb37d721ea9140d400e08e5d0b29d4',
-      authToken: '9a524a9bdd88aa1ad9673cdffdea675e',
+      authToken: 'f0fea7b6dc44f5324c39c3052fe80bdd',
       twilioNumber: '+12546556169');
     super.initState();
     
