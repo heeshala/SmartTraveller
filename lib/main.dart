@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       home: AnimatedSplashScreen(
           duration: 1000,
-          splash: Icons.home,
+          splash: Image.asset('assets/images/smartBus.jpeg'),
           
           nextScreen: Home(),
           splashTransition: SplashTransition.fadeTransition,

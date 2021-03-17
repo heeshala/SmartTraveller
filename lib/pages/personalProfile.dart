@@ -24,7 +24,7 @@ class Profile extends StatefulWidget {
           
             appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text('Bus Stops',style:GoogleFonts.pacifico(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 20),),),
+        title: Text('SmartTraveller Recharge',style:GoogleFonts.pacifico(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 20),),),
         centerTitle: true,
         backgroundColor: Colors.blue,leading: IconButton(icon: Icon(Icons.arrow_back,color: Colors.white,),
             onPressed: () => {Navigator.pop(context),
