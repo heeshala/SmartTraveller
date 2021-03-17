@@ -1,4 +1,4 @@
-import 'package:firebase_core/firebase_core.dart';
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -65,7 +65,7 @@ class Home extends StatelessWidget {
                   ),
                   
                   Container(
-                      height: displayHeight*0.09,
+                      height: displayHeight*0.11,
                       
                       padding: EdgeInsets.fromLTRB(displayWidth*0.2, 30, displayWidth*0.2, 0),
                       child: RaisedButton(
