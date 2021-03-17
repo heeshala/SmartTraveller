@@ -21,29 +21,7 @@ class Profile extends StatefulWidget {
     return MaterialApp(
         
       home: Scaffold(
-          /*appBar: AppBar(
-            iconTheme: IconThemeData(color: Colors.white),
-            title: Row(
-                children: <Widget>[
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: Colors.white,
-                    ),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                  ),Text(
-              'SmartTraveller Recharge ',
-              style: GoogleFonts.pacifico(
-                textStyle: TextStyle(
-                    color: Colors.white, letterSpacing: .5, fontSize: 20),
-              ),
-            ),
-            ],
-            
-          ),  centerTitle: true,
-            backgroundColor: Colors.blue,)*/
+          
             appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
         title: Text('Bus Stops',style:GoogleFonts.pacifico(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 20),),),
