@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'package:travelpass_recharge/pages/user.dart';
 import 'package:travelpass_recharge/pages/data.dart';
 
 
@@ -49,7 +49,9 @@ class Profile extends StatefulWidget {
         title: Text('Bus Stops',style:GoogleFonts.pacifico(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 20),),),
         centerTitle: true,
         backgroundColor: Colors.blue,leading: IconButton(icon: Icon(Icons.arrow_back,color: Colors.white,),
-            onPressed: () => Navigator.of(context).pop(),),
+            onPressed: () => {Navigator.pop(context),
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => User())),},),
 
       ),
           body: Padding(
