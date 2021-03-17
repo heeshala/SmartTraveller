@@ -125,7 +125,7 @@ class _NewMapState extends State<LiveBus> {
             double longitude = double.parse(value.docs[b]['lon']);
 
             var markerIdVal = value.docs[b].id;
-            print(markerIdVal);
+            
             final MarkerId markerId = MarkerId(markerIdVal);
 
             final Marker marker = Marker(
@@ -179,13 +179,14 @@ class _NewMapState extends State<LiveBus> {
                                               fontSize: 25,
                                               color: Colors.white,
                                             )),
-                                        Row(children: [
+                                        Row(mainAxisAlignment: MainAxisAlignment.center,children: [
                                           // this creates scat.length many elements inside the Column
 
                                           TextButton(
                                             child: Text(
                                                 'Passengers ' +
                                                     userDocument['passengers']
+                                                        .toString()+'/'+userDocument['seats']
                                                         .toString(),
                                                 style: TextStyle(
                                                   fontSize: 18,
