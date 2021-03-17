@@ -77,6 +77,61 @@ namespace AccountCreation
             }
         }
 
+private void btnHome_Click(object sender, EventArgs e)
+        {
+            pnlPassenger.Hide();
+            pnlAccntType.Show();
+        }
+        string type;
+        private void cmbType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            type = cmbType.SelectedItem.ToString();
+        }
+
+        private void button5_Click(object sender, EventArgs e)
+        {
+            Agent_Data_Entry(txtAgentNIC.Text);
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            pnlAgent.Hide();
+            pnlAccntType.Show();
+        }
+
+        void Agent_Data_Entry(string nic)
+        {
+            string pass = EncryptString(key, txtPass.Text);
+
+
+           try { 
+            DocumentReference DocRef = database.Collection("agent").Document(nic);
+            Dictionary<string, object> data2 = new Dictionary<string, object>
+            {
+
+                    { "name", txtNameAgent.Text },
+                    { "password",pass },
+                    { "type",type },
+                    { "credits",int.Parse(txtCredits.Text) },
+
+            };
+
+
+            DocRef.SetAsync(data2);
+            MessageBox.Show("Data Added Successfully");
+                txtAgentNIC.Clear();
+                txtCredits.Clear();
+                txtNameAgent.Clear();
+                cmbType.SelectedIndex = 0;
+                txtPass.Clear();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Unsuccessfull");
+            }
+
+
+        }
        
 
         public static string key = "b14ca5898a4e4133bbce2ea2315a1916";
