@@ -167,7 +167,7 @@ String EncryptString( String password) {
   final encrypter = encrypt.Encrypter(encrypt.AES(key, mode: encrypt.AESMode.ecb));
 
   final encrypted = encrypter.encrypt(plainText, iv: iv);
-  final decrypted = encrypter.decrypt(encrypted, iv: iv);
+  
 
   
   return encrypted.base64.toString();
