@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "smart-traveller-302307",
+  "private_key_id": "e852957336ea739168db5477ab9db3927e8c7f97",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQCrViu9xrxy5cY/\nK2acnMP5x5Q31WbRkE+jBiUKjBB3xow8U1HcMkBIWhvlfJT02d3tQTAf3ngN3C95\nSz5+DsuqgVJTosPrVEXf4zimczAeWU6+I8nm88hMbi+59ZICXb7MdjGdBOSavMWv\nKKusLKWTaKqk5p9kpdbqN4w21dpZRITfNLpe19bTWJdUykC9WuRTZrjmnRcFeSPP\n0LBs2RnjA5TkRnbUqq8Oo73GjwG55EdDNpNq73GrW1j/H1An6pl8ptv0Wp12Qo4h\nnxU9AORzDGomPueQnwo3oLDppNEFHHfx55fJeTznQvwCvkhZhPoK6bdSEDqeR3HZ\nK8ew5nxPAgMBAAECggEAQFAgKyQmKJrHR37rDW5qwZ+Aq1SXO6KHwhHUZZkdtVf5\n28sKtzTFnGL2hbW11BLTkvMdNVk0hz9XMphj5L15BY91b59xGyyO7fNEmHY0Ya/0\nNrsIVoC7drUFhTAAlpLJw8W56c6kYNDrA0yo4//+Rs7K/wryWb1GZrRjFVJAm7DW\ndGdJsVeFdP6WVq6T6B8L8DPjeX27I6SijlC/6VjbDZCnpjm6/aZv7Bvp3iaRLdor\nxvEuE93NUaWI3c4fjPs9CI0uWuVMSY9PwEwozrH5bSmUX9cc51pXnLV4znOUfQCv\n0Te7sDfBVpFvginUhCSaduc8mEHGnRN2s2Q41xXsgQKBgQDowLgXiDeawSdsH3QU\nVEBNJA0pZ1qk4d/d/jzpCG4Mx940TKzf2P1RwN5SFZyzIBKZ8rf1D/yrqUdF1sqf\nnnLGE8sDDvM4bEuCpyHjLE4HQ1Sz2tIDu2BDouWVILNlu0Rb5bn9OgVD1mSL0Rek\nHUJ08jaW9vHnOzoCvG1ZxgyyyQKBgQC8cxgrsrtN1wqBUcH1Ol5mEvZzzSvAzEUK\nWJPhbaaydgTFgVt4mkHpTqWjssYGICco7p8zfYpyQybdF5uQiTB1Nk0/djlytELf\nsSUaeaaKm/9K983UR+QgAOfXOkliymoqrhunTGY4WtnhIScySNG6V17sFDRmNr2j\np/59SNrqVwKBgQDeahsA0bhg96bWWZAxRPlVPdgd8pfZ68Zjeml2Pgn7yJp727Fv\nDwmzL9zDD8f4G/PqjNhhI+/Nkit7f2+M7Hq88XkT6RtelY3qwg9N6K5/nkW4wKfj\nzRCGUYmV4fPMiREfx/zdEK6rTpoySZKPzy4MVtD3ne83iY87whe0q97CkQKBgQCn\nPXk45qBlPy86fwUjjY5TBgcj0/Q9YMrwmJV8nOQwQp6PbPJxgGx4Eezb7v7gVs6J\n++LbPlGMf93Qnm/XgHi5vNwnMtNe4WzrufkUmtta7YBN1sca2kYwxLz7e+W+v6Yi\nhGtUOHALGU19BwATFx7RQVKjLncmMvRvddpa8zocdwKBgQCq47AGtKD3Mvg4msqA\nXiAFPubOC4LJMpqIIAw5nfYVPDEE9AgHLDwyopMLOGEUhF2HzEQUJtcNZKY3zAWB\nRtiHLkBD1MuyMK4zfTF0C5BrJB8weBK4I2GOgLmnjE2mHRlOHRKF+foLTMXS8wWY\nKATlSwLJM/XziONh4XfyVdxuXg==\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-129kr@smart-traveller-302307.iam.gserviceaccount.com",
+  "client_id": "116042425692916025360",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-129kr%40smart-traveller-302307.iam.gserviceaccount.com"
+}
