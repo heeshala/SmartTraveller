@@ -24,9 +24,7 @@ The passenger application has the following features
  - [ ] Ability to live locate the bus
  - [ ] Ability to know the current number of passengers in the bus
  - [ ] Ability to check the balance of the travel pass (Only in NFC enabled devices)
-[
-![enter image description here](https://freeiconshop.com/wp-content/uploads/edd/google-play-badge-128x128.png)
-](playstoe)
+
 ## Agent Application
 
 The agent application is designed for bus drivers, bus owners and recharge agents.
