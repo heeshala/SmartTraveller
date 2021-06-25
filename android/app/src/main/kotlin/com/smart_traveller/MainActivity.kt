@@ -1,4 +1,4 @@
-package com.example.smart_traveller
+package com.smart_traveller
 
 import io.flutter.embedding.android.FlutterActivity
 

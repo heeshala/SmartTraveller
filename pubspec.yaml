@@ -47,8 +47,10 @@ dependencies:
   animated_text_kit: ^3.1.2
   url_launcher: ^5.7.10
   cool_alert: ^1.0.3
-  
-  
+  change_app_package_name: ^0.1.2
+  search_app_bar_page: ^2.0.1
+  favorite_button: ^0.0.4
+  shared_preferences: ^0.5.12
 
   
 

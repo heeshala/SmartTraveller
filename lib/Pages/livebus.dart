@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:favorite_button/favorite_button.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LiveBus extends StatefulWidget {
   @override
@@ -14,6 +16,8 @@ class LiveBus extends StatefulWidget {
 class RouteNumber {
   static String route;
   static String routeName = 'Route';
+  static String selectedRoute;
+  static bool liked;
 }
 
 Future setMapStyle(GoogleMapController controller, BuildContext context) async {
@@ -39,16 +43,33 @@ class _NewMapState extends State<LiveBus> {
   BitmapDescriptor busIcon;
   var lat;
   var long;
+
+ List<String> fav = [];
+ 
+  SharedPreferences prefs;
+
   Future<Widget> reloadCurrentLocation;
 
   @override
   void initState() {
+    
     super.initState();
+    getfav();
     timer =
         Timer.periodic(Duration(milliseconds: 1000), (Timer t) => refresh());
     reloadCurrentLocation = getCurrentLocation();
+    
   }
 
+  void getfav() async{
+ prefs = await SharedPreferences.getInstance();
+     fav = prefs.getStringList('favouriteroutes');
+                      print(fav);
+}
+   
+  
+
+ 
   Future<Widget> getCurrentLocation() async {
     LocationPermission permission;
 
@@ -78,6 +99,7 @@ class _NewMapState extends State<LiveBus> {
     }
 
     populateClients();
+    
     setCustomMapPin();
 
     return _child = mapWidget();
@@ -286,8 +308,35 @@ class _NewMapState extends State<LiveBus> {
               onPressed: () => {
                 timer.cancel(),
                 Navigator.of(context).pop(),
+                
               }
             ),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(left: 2),
+                child: StarButton(
+                  
+                  isStarred: RouteNumber.liked,
+                   iconDisabledColor: Colors.white,
+                  valueChanged: (_isStarred) {
+                    if(_isStarred==true){
+                      fav.add(RouteNumber.routeName);
+                      prefs.setStringList('favouriteroutes', fav);
+                      var yourList = prefs.getStringList('favouriteroutes');
+                      print(yourList);
+                    }else{
+                       fav.remove(RouteNumber.routeName);
+                       prefs.setStringList('favouriteroutes', fav);
+                       var yourList = prefs.getStringList('favouriteroutes');
+                      print(yourList);
+                      RouteNumber.liked=false;
+                    }
+                  },
+                ),
+              ),
+              
+            ],
+        
       ),
       body: mapWidget(),
     );
@@ -296,6 +345,7 @@ class _NewMapState extends State<LiveBus> {
  @override
   void dispose() {
     timer.cancel();
+    
     super.dispose();
   }
  
