@@ -45,6 +45,7 @@ class _NewMapState extends State<LiveBus> {
   var long;
 
  List<String> fav = [];
+  List<String> gfav = [];
  
   SharedPreferences prefs;
 
@@ -54,7 +55,7 @@ class _NewMapState extends State<LiveBus> {
   void initState() {
     
     super.initState();
-    getfav();
+    
     timer =
         Timer.periodic(Duration(milliseconds: 1000), (Timer t) => refresh());
     reloadCurrentLocation = getCurrentLocation();
@@ -63,8 +64,16 @@ class _NewMapState extends State<LiveBus> {
 
   void getfav() async{
  prefs = await SharedPreferences.getInstance();
-     fav = prefs.getStringList('favouriteroutes');
-                      print(fav);
+     gfav = prefs.getStringList('favouriteroutes');
+     if(gfav !=null){
+        fav=gfav;
+        print("not null");
+      }else{
+        fav= <String>[];
+        print(fav.length);
+      }
+     
+      print(fav);
 }
    
   
@@ -82,8 +91,19 @@ class _NewMapState extends State<LiveBus> {
       permission = await Geolocator.requestPermission();
       if (permission != LocationPermission.whileInUse &&
           permission != LocationPermission.always) {
-        lat = 6.9271;
-        long = 79.8612;
+            setState(() {
+              lat = 6.9271;
+              long = 79.8612;
+              
+            });
+        
+      }else{
+        Position res = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        setState(() {
+        lat = res.latitude;
+        long = res.longitude;
+        });
       }
     } else {
       try {
@@ -97,7 +117,7 @@ class _NewMapState extends State<LiveBus> {
         long = 79.8612;
       }
     }
-
+    getfav();
     populateClients();
     
     setCustomMapPin();

@@ -13,26 +13,37 @@ class Routes extends StatefulWidget {
 
 class _NewMapState extends State<Routes> {
   List<String> fav = [];
+  List<String> sfav = [];
   SharedPreferences prefs;
 
-  bool isLoaded = false;
+  bool isLoaded;
   @override
   void initState() {
-    getfav();
+    isLoaded = false;
     super.initState();
+    getfav();
     
   }
 
-  void getfav() async {
+ Future<Null> getfav() async {
     prefs = await SharedPreferences.getInstance();
-    fav = prefs.getStringList('favouriteroutes');
-    print(fav);
+    sfav = prefs.getStringList('favouriteroutes');
+    print("B4"+ fav.toString());
     setState(() {
+      if(sfav !=null){
+        fav=sfav;
+        print("not null");
+      }else{
+        fav= <String>[];
+        print(fav.length);
+      }
+      
       isLoaded = true;
+      print(fav);
     });
   }
 
-  void matchfav() async {
+ Future<Null> matchfav() async {
     prefs = await SharedPreferences.getInstance();
     fav = prefs.getStringList('favouriteroutes');
 
@@ -85,6 +96,7 @@ class _NewMapState extends State<Routes> {
           body: TabBarView(
             children: [
               //Favourites
+              
               if (!isLoaded) ...{
                 Center(child: CircularProgressIndicator())
               } else ...{
@@ -99,17 +111,19 @@ class _NewMapState extends State<Routes> {
                       List data = snapshot.data.docs;
 
                       List item = [];
-
+                      
+                      if(fav.length>0 && data.length>0){
                       for (int a = 0; a < data.length; a++) {
                         for (int b = 0; b < fav.length; b++) {
                           if (data[a]['number'] + " " + data[a]['name'] ==
                               fav[b]) {
                             item.add(data[a]);
-                            print(data[a]);
+                            //print(data[a]);
                             break;
                           }
                         }
                       }
+                      
 
                       if (item.length > 0) {
                         return ListView.builder(
@@ -146,7 +160,7 @@ class _NewMapState extends State<Routes> {
                                           MaterialPageRoute(
                                               builder: (context) => LiveBus())).then((value) {
                   setState(() {
-                    initState();
+                         getfav();                  
                   });
                 });
                                     },
@@ -182,7 +196,17 @@ class _NewMapState extends State<Routes> {
                             //
 
                             );
-                      } else {}
+                      } else {
+                     return Center(child: Container(
+                       child: Text("Add Favourites"),
+                     ));
+
+                      }
+                      }else{
+                        return Center(child: Container(
+                       child: Text("Add Favourites"),
+                     ));
+                      }
                     }
                   }
               
@@ -224,8 +248,9 @@ class _NewMapState extends State<Routes> {
                                     MaterialPageRoute(
                                         builder: (context) => LiveBus())).then((value) {
                   setState(() {
-                         initState();                    
+                      getfav();                  
                   });
+                
                 });
                               },
                               child: Align(
