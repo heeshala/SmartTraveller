@@ -41,6 +41,11 @@ class _NewHomeState extends State<HomePage> {
                 TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
           ),
         ),
+        flexibleSpace: Image(
+          image: AssetImage('assets/images/home.png'),
+          fit: BoxFit.cover,
+        ),
+        backgroundColor: Colors.transparent,
       ),
       body: bodyWidget(context),
       drawer: Container(

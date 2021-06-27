@@ -84,6 +84,9 @@ flutter:
     - assets/maps/map_style.json
     - assets/images/train.gif
     - assets/images/tapnfc.png
+    - assets/images/navigation.png
+    - assets/images/home.png
+    - assets/images/2.png
     
     
   # To add assets to your application, add an assets section, like this:
