@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:smart_traveller/Pages/faq.dart';
 import 'package:smart_traveller/Pages/passScan.dart';
 
@@ -7,7 +8,10 @@ import 'package:smart_traveller/Pages/routes.dart';
 import 'package:smart_traveller/Pages/stops.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:marquee/marquee.dart';
+import 'package:smart_traveller/provider/local_provider.dart';
+import 'package:smart_traveller/widget/language_picker_widget.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -21,15 +25,20 @@ class _NewHomeState extends State<HomePage> {
   void initState() {
     myImage = Image.asset("assets/images/background.png");
     super.initState();
+    
+    
     //
     //
   }
 
   @override
   void didChangeDependencies() {
-    super.didChangeDependencies();
+    //super.didChangeDependencies();
     precacheImage(myImage.image, context);
+    
+    super.didChangeDependencies();
   }
+  
 
   Widget build(BuildContext context) {
     return new Scaffold(
@@ -82,7 +91,8 @@ class _NewHomeState extends State<HomePage> {
                   ),
                   child: ListTile(
                     title: Text(
-                      'Routes',
+                      AppLocalizations.of(context).routes,
+                      //'Routes',
                       style: TextStyle(fontSize: 15),
                     ),
                     onTap: () {
@@ -99,7 +109,8 @@ class _NewHomeState extends State<HomePage> {
                   ),
                   child: ListTile(
                     title: Text(
-                      'Bus Stops',
+                       AppLocalizations.of(context).busstops,
+                      //'Bus Stops',
                       style: TextStyle(fontSize: 15),
                     ),
                     onTap: () {
@@ -116,7 +127,8 @@ class _NewHomeState extends State<HomePage> {
                   ),
                   child: ListTile(
                     title: Text(
-                      'FAQ',
+                       AppLocalizations.of(context).faq,
+                      //'FAQ',
                       style: TextStyle(fontSize: 15),
                     ),
                     onTap: () {
@@ -134,7 +146,8 @@ class _NewHomeState extends State<HomePage> {
                   ),
                   child: ListTile(
                     title: Text(
-                      'My Travel Pass',
+                      AppLocalizations.of(context).mypass,
+                      //'My Travel Pass',
                       style: TextStyle(fontSize: 15),
                     ),
                     // Within the `FirstRoute` widget
@@ -145,6 +158,18 @@ class _NewHomeState extends State<HomePage> {
                     },
                   ),
                 ),
+                //Language
+                Theme(
+                  data: ThemeData(
+                    splashColor: Colors.lightBlueAccent,
+                    highlightColor: Colors.blue.withOpacity(.3),
+                  ),
+                  
+                    child: LanguagePickerWidget(),
+                    // Within the `FirstRoute` widget
+                    
+                  ),
+                
               ],
             ),
           ),

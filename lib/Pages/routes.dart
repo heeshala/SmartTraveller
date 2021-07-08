@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 import 'package:smart_traveller/Pages/livebus.dart';
 import 'package:marquee/marquee.dart';
 import 'package:search_app_bar_page/search_app_bar_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smart_traveller/provider/local_provider.dart';
+
+import 'dataClass.dart';
 
 class Routes extends StatefulWidget {
   @override
@@ -14,14 +19,22 @@ class Routes extends StatefulWidget {
 class _NewMapState extends State<Routes> {
   List<String> fav = [];
   List<String> sfav = [];
+
+  List<String> enfav = [];
+  List<String> tafav = [];
+  List<String> sifav = [];
+  List<String> zhfav = [];
   Set<String> all = <String>{};
   SharedPreferences prefs;
   Icon actionIcon = new Icon(
     Icons.search,
     color: Colors.white,
   );
+
+  
   Widget appBarTitle = new Text(
     "Routes",
+    
     style: GoogleFonts.pacifico(
       textStyle:
           TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
@@ -36,15 +49,74 @@ class _NewMapState extends State<Routes> {
   @override
   void initState() {
     isLoaded = false;
+    setapptitle();
     super.initState();
     getfav();
     _IsSearching = false;
     _SearchListState();
   }
 
+  void setapptitle(){
+    if(Data.local=='en'){
+          this.appBarTitle = new Text(
+        
+        "Routes",
+        style: GoogleFonts.pacifico(
+          textStyle:
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+        ),
+      );
+        }else if(Data.local=='si'){
+           this.appBarTitle = new Text(
+        
+        "මාර්ග",
+        style: GoogleFonts.pacifico(
+          textStyle:
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+        ),
+      );
+
+        }else if(Data.local=='ta'){
+           this.appBarTitle = new Text(
+        
+        "வழிகள்",
+        style: GoogleFonts.pacifico(
+          textStyle:
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+        ),
+      );
+
+        }else if(Data.local=='zh'){
+           this.appBarTitle = new Text(
+        
+        "路线",
+        style: GoogleFonts.pacifico(
+          textStyle:
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+        ),
+      );
+        }
+  }
+
   Future<Null> getfav() async {
     prefs = await SharedPreferences.getInstance();
-    sfav = prefs.getStringList('favouriteroutes');
+    if(Data.local=='en'){
+       sfav = prefs.getStringList('enfavouriteroutes');
+       
+    }else if(Data.local=='si'){
+       sfav = prefs.getStringList('sifavouriteroutes');
+       
+    }else if(Data.local=='ta'){
+       sfav = prefs.getStringList('tafavouriteroutes');
+       
+    }else if(Data.local=='zh'){
+       sfav = prefs.getStringList('zhfavouriteroutes');
+       
+    }
+    enfav=prefs.getStringList('enfavouriteroutes');
+    sifav=prefs.getStringList('sifavouriteroutes');
+    tafav=prefs.getStringList('tafavouriteroutes');
+    zhfav=prefs.getStringList('zhfavouriteroutes');
     print("B4" + fav.toString());
     setState(() {
       if (sfav != null) {
@@ -52,6 +124,10 @@ class _NewMapState extends State<Routes> {
         print("not null");
       } else {
         fav = <String>[];
+        enfav=<String>[];
+        sifav=<String>[];
+        tafav=<String>[];
+        zhfav=<String>[];
         print(fav.length);
       }
 
@@ -62,7 +138,23 @@ class _NewMapState extends State<Routes> {
 
   Future<Null> matchfav() async {
     prefs = await SharedPreferences.getInstance();
-    fav = prefs.getStringList('favouriteroutes');
+    if(Data.local=='en'){
+       fav = prefs.getStringList('enfavouriteroutes');
+       
+    }else if(Data.local=='si'){
+       fav = prefs.getStringList('sifavouriteroutes');
+       
+    }else if(Data.local=='ta'){
+       fav = prefs.getStringList('tafavouriteroutes');
+       
+    }else if(Data.local=='zh'){
+       fav = prefs.getStringList('zhfavouriteroutes');
+       
+    }
+
+    if(fav==null){
+      fav=<String>[];
+    }
 
     for (int a = 0; a < fav.length; a++) {
       print(a.toString() + " " + fav[a]);
@@ -95,7 +187,11 @@ class _NewMapState extends State<Routes> {
     });
   }
 
+ 
   Widget build(BuildContext context) {
+    
+    
+    
     return Scaffold(
       body: DefaultTabController(
         length: 2,
@@ -119,7 +215,7 @@ class _NewMapState extends State<Routes> {
                         decoration: new InputDecoration(
                             prefixIcon:
                                 new Icon(Icons.search, color: Colors.white),
-                            hintText: "Search...",
+                            hintText: AppLocalizations.of(context).hintsearch,
                             hintStyle: new TextStyle(color: Colors.white)),
                       );
                       _handleSearchStart();
@@ -134,11 +230,11 @@ class _NewMapState extends State<Routes> {
               tabs: [
                 Tab(
                   icon: Icon(Icons.star),
-                  text: "Favourites",
+                  text: AppLocalizations.of(context).favourites,
                 ),
                 Tab(
                   icon: Icon(Icons.directions_bus),
-                  text: "Bus",
+                  text: AppLocalizations.of(context).busall,
                 ),
               ],
             ),
@@ -178,6 +274,7 @@ class _NewMapState extends State<Routes> {
   }
 
   Widget buildfavList() {
+   
     return StreamBuilder(
         stream: FirebaseFirestore.instance.collection('routes').snapshots(),
         builder: (context, snapshot) {
@@ -191,7 +288,7 @@ class _NewMapState extends State<Routes> {
             if (fav.length > 0 && data.length > 0) {
               for (int a = 0; a < data.length; a++) {
                 for (int b = 0; b < fav.length; b++) {
-                  if (data[a]['number'] + " " + data[a]['name'] == fav[b]) {
+                  if (data[a]['number'] + " " + data[a]['rloc'][Data.local] == fav[b]) {
                     item.add(data[a]);
                     //print(data[a]);
                     break;
@@ -203,7 +300,7 @@ class _NewMapState extends State<Routes> {
                 return ListView.builder(
                     itemCount: item.length,
                     itemBuilder: (context, index) {
-                      print(item[index]['number'] + " " + item[index]['name']);
+                      print(item[index]['number'] + " " + item[index]['rloc'][Data.local]);
 
                       return Center(
                         child: Container(
@@ -235,11 +332,11 @@ class _NewMapState extends State<Routes> {
                             onPressed: () {
                               var id = item[index].id;
                               RouteNumber.route = id;
-                              RouteNumber.routeName = 'Route';
+                              RouteNumber.routeName = AppLocalizations.of(context).route;
                               RouteNumber.selectedRoute = item[index]
                                       ['number'] +
                                   " " +
-                                  item[index]['name'];
+                                  item[index]['rloc'][Data.local];
                               matchfav();
                               isLoaded = false;
                               Navigator.push(
@@ -262,7 +359,7 @@ class _NewMapState extends State<Routes> {
                                         child: Marquee(
                                           text: item[index]['number'] +
                                               " ⋮ " +
-                                              item[index]['name'],
+                                              item[index]['rloc'][Data.local],
                                           style: TextStyle(fontSize: 22),
                                           scrollAxis: Axis.horizontal,
                                           crossAxisAlignment:
@@ -285,13 +382,13 @@ class _NewMapState extends State<Routes> {
               } else {
                 return Center(
                     child: Container(
-                  child: Text("Add Favourites"),
+                  child: Text(AppLocalizations.of(context).addfav),
                 ));
               }
             } else {
               return Center(
                   child: Container(
-                child: Text("Add Favourites"),
+                child: Text(AppLocalizations.of(context).addfav),
               ));
             }
           }
@@ -307,7 +404,7 @@ class _NewMapState extends State<Routes> {
 
         return ListView(
           children: snapshot.data.docs.map<Widget>((document) {
-            all.add(document['number'] + " " + document['name']);
+            all.add(document['number'] + " " + document['rloc'][Data.local]);
             print(all);
 
             return Center(
@@ -340,9 +437,9 @@ class _NewMapState extends State<Routes> {
                   onPressed: () {
                     var id = document.id;
                     RouteNumber.route = id;
-                    RouteNumber.routeName = 'Route';
+                    RouteNumber.routeName = AppLocalizations.of(context).route;
                     RouteNumber.selectedRoute =
-                        document['number'] + " " + document['name'];
+                        document['number'] + " " + document['rloc'][Data.local];
                     matchfav();
                     isLoaded = false;
                     Navigator.push(context,
@@ -363,7 +460,7 @@ class _NewMapState extends State<Routes> {
                               child: Marquee(
                                 text: document['number'] +
                                     " ⋮ " +
-                                    document['name'],
+                                    document['rloc'][Data.local],
                                 style: TextStyle(fontSize: 22),
                                 scrollAxis: Axis.horizontal,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -414,7 +511,7 @@ class _NewMapState extends State<Routes> {
               if (favSlist.length > 0 && data.length > 0) {
                 for (int a = 0; a < data.length; a++) {
                   for (int b = 0; b < favSlist.length; b++) {
-                    if (data[a]['number'] + " " + data[a]['name'] ==
+                    if (data[a]['number'] + " " + data[a]['rloc'][Data.local] ==
                         favSlist[b]) {
                       item.add(data[a]);
                       //print(data[a]);
@@ -444,11 +541,11 @@ class _NewMapState extends State<Routes> {
                               onPressed: () {
                                 var id = item[index].id;
                                 RouteNumber.route = id;
-                                RouteNumber.routeName = 'Route';
+                                RouteNumber.routeName = AppLocalizations.of(context).route;
                                 RouteNumber.selectedRoute = item[index]
                                         ['number'] +
                                     " " +
-                                    item[index]['name'];
+                                    item[index]['rloc'][Data.local];
                                 matchfav();
                                 isLoaded = false;
                                 Navigator.push(
@@ -471,7 +568,7 @@ class _NewMapState extends State<Routes> {
                                           child: Marquee(
                                             text: item[index]['number'] +
                                                 " ⋮ " +
-                                                item[index]['name'],
+                                                item[index]['rloc'][Data.local],
                                             style: TextStyle(fontSize: 22),
                                             scrollAxis: Axis.horizontal,
                                             crossAxisAlignment:
@@ -494,13 +591,13 @@ class _NewMapState extends State<Routes> {
                 } else {
                   return Center(
                       child: Container(
-                    child: Text("No Route Found"),
+                    child: Text(AppLocalizations.of(context).noresult),
                   ));
                 }
               } else {
                 return Center(
                     child: Container(
-                  child: Text("No Route Found"),
+                  child: Text(AppLocalizations.of(context).noresult),
                 ));
               }
             }
@@ -533,7 +630,7 @@ class _NewMapState extends State<Routes> {
               if (allSlist.length > 0 && data.length > 0) {
                 for (int a = 0; a < data.length; a++) {
                   for (int b = 0; b < allSlist.length; b++) {
-                    if (data[a]['number'] + " " + data[a]['name'] ==
+                    if (data[a]['number'] + " " + data[a]['rloc'][Data.local] ==
                         allSlist[b]) {
                       item.add(data[a]);
                       //print(data[a]);
@@ -547,7 +644,7 @@ class _NewMapState extends State<Routes> {
                       itemCount: item.length,
                       itemBuilder: (context, index) {
                         print(
-                            item[index]['number'] + " " + item[index]['name']);
+                            item[index]['number'] + " " + item[index]['rloc'][Data.local]);
 
                         return Center(
                           child: Container(
@@ -563,11 +660,11 @@ class _NewMapState extends State<Routes> {
                               onPressed: () {
                                 var id = item[index].id;
                                 RouteNumber.route = id;
-                                RouteNumber.routeName = 'Route';
+                                RouteNumber.routeName = AppLocalizations.of(context).route;
                                 RouteNumber.selectedRoute = item[index]
                                         ['number'] +
                                     " " +
-                                    item[index]['name'];
+                                    item[index]['rloc'][Data.local];
                                 matchfav();
                                 isLoaded = false;
                                 Navigator.push(
@@ -590,7 +687,7 @@ class _NewMapState extends State<Routes> {
                                           child: Marquee(
                                             text: item[index]['number'] +
                                                 " ⋮ " +
-                                                item[index]['name'],
+                                                item[index]['rloc'][Data.local],
                                             style: TextStyle(fontSize: 22),
                                             scrollAxis: Axis.horizontal,
                                             crossAxisAlignment:
@@ -613,13 +710,13 @@ class _NewMapState extends State<Routes> {
                 } else {
                   return Center(
                       child: Container(
-                    child: Text("No Matching Route Found"),
+                    child: Text(AppLocalizations.of(context).noresult),
                   ));
                 }
               } else {
                 return Center(
                     child: Container(
-                  child: Text("No Matching Route Found"),
+                  child: Text(AppLocalizations.of(context).noresult),
                 ));
               }
             }
@@ -641,13 +738,47 @@ class _NewMapState extends State<Routes> {
         Icons.search,
         color: Colors.white,
       );
-      this.appBarTitle = new Text(
+      if(Data.local=='en'){
+          this.appBarTitle = new Text(
+        
         "Routes",
         style: GoogleFonts.pacifico(
           textStyle:
               TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
         ),
       );
+        }else if(Data.local=='si'){
+           this.appBarTitle = new Text(
+        
+        "මාර්ග",
+        style: GoogleFonts.pacifico(
+          textStyle:
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+        ),
+      );
+
+        }else if(Data.local=='ta'){
+           this.appBarTitle = new Text(
+        
+        "வழிகள்",
+        style: GoogleFonts.pacifico(
+          textStyle:
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+        ),
+      );
+
+        }else if(Data.local=='zh'){
+           this.appBarTitle = new Text(
+        
+        "路线",
+        style: GoogleFonts.pacifico(
+          textStyle:
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+        ),
+      );
+
+        }
+      
       _IsSearching = false;
       _searchQuery.clear();
     });

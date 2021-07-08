@@ -4,6 +4,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:provider/provider.dart';
+
+import '../provider/local_provider.dart';
+import 'dataClass.dart';
+import 'package:smart_traveller/provider/local_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 class Stops extends StatefulWidget {
@@ -33,8 +39,9 @@ class _NewMapState extends State<Stops> {
       @override
       void initState() {
         super.initState();
-    
+        print(Data.local);
         reloadCurrentLocation = getCurrentLocation();
+        
       }
     
       Future<Widget> getCurrentLocation() async {
@@ -81,7 +88,9 @@ class _NewMapState extends State<Stops> {
   }
 
   void initMarker(tomb, tombId) {
-    var stopname = tomb['name'];
+    
+    var stopname = tomb[Data.local];
+    print(stopname);
     var markerIdVal = tombId;
     final MarkerId markerId = MarkerId(markerIdVal);
 
@@ -109,7 +118,7 @@ class _NewMapState extends State<Stops> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text('Bus Stops',style:GoogleFonts.pacifico(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 20),),),
+        title: Text(AppLocalizations.of(context).busstops,style:GoogleFonts.pacifico(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 20),),),
         centerTitle: true,
         backgroundColor: Colors.blue,
       ),
@@ -165,6 +174,7 @@ class _NewMapState extends State<Stops> {
 
 
 void _settingModalBottomSheet(context, String idof, String stopname) {
+  
   showModalBottomSheet(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
@@ -196,6 +206,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                         for (var i = 0;
                             i < userDocument['routes'].length;
                             i++) ...[
+                              
                           Padding(
                             padding:
                                 const EdgeInsets.only(left: 4.0, right: 4.0),
@@ -212,7 +223,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                     ),
                                   ),
                                   
-                                  Text((userDocument["routes"][i].toString()),
+                                  Text((userDocument["rloc"][Data.local][i].toString()),
                                       style: TextStyle(
                                         fontSize: 25,
                                         color: Colors.white,
@@ -226,7 +237,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                       Center( child:TextButton(
                                         
                                         child: Text(
-                                            'No Bus Scheduled',
+                                            AppLocalizations.of(context).noschedule,
                                             style: TextStyle(
                                               fontSize: 18,
                                               color: Colors.white,
@@ -285,4 +296,6 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
               ],
             ));
       });
+
+
 }

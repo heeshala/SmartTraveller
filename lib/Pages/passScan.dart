@@ -7,8 +7,9 @@ import 'package:flutter_nfc_reader/flutter_nfc_reader.dart';
 import 'dart:math';
 
 import 'package:google_fonts/google_fonts.dart';
-
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:smart_traveller/provider/local_provider.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 
@@ -35,7 +36,7 @@ class _NfcScanState extends State<NfcScan> {
           appBar: AppBar(
             iconTheme: IconThemeData(color: Colors.white),
             title: Text(
-              'My Travel Pass',
+              AppLocalizations.of(context).mypass,
               style: GoogleFonts.pacifico(
                 textStyle: TextStyle(
                     color: Colors.white, letterSpacing: .5, fontSize: 20),
@@ -57,13 +58,14 @@ class _NfcScanState extends State<NfcScan> {
   @override
   initState() {
     super.initState();
-   status="Tap Your Travel Pass";
+   
+   status=AppLocalizations.of(context).tap;
  balance="";
  nfcIcon=Icons.cast;
     
     FlutterNfcReader.onTagDiscovered().listen((onData) {
       setState(() {
-        status="Reading...";
+        status=AppLocalizations.of(context).tapsearch;
         balance="";
       });
       
@@ -74,6 +76,8 @@ class _NfcScanState extends State<NfcScan> {
       
     });
   }
+
+
 
   @override
   void dispose() {
@@ -164,8 +168,8 @@ void checkcard(){
       
        if(found){
         setState(() {
-        status="Remaining Credit Amount";
-        balance="Rs."+money;
+        status=AppLocalizations.of(context).remaining;
+        balance=AppLocalizations.of(context).rs+""+money;
         nfcIcon=Icons.cast_connected;
       });
        }
@@ -173,13 +177,13 @@ void checkcard(){
          setState(()  {
         
         
-        status="Tap Your Travel Pass";
+        status=AppLocalizations.of(context).tap;
         nfcIcon=Icons.cast;
       });
       CoolAlert.show(
           context: context,
           type: CoolAlertType.error,
-          text: "Invalid Travel Pass",
+          text: AppLocalizations.of(context).invalid,
          
         );
       
@@ -193,7 +197,7 @@ void checkcard(){
 
 void back(){
   Navigator.of(context).pop();
-  status="Tap Your Travel Pass";
+  status=AppLocalizations.of(context).tap;
  balance="";
  nfcIcon=Icons.cast;
 }

@@ -23,6 +23,11 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+
+  flutter_localizations:
+    sdk: flutter
+
+  
     
     
 
@@ -51,6 +56,8 @@ dependencies:
   search_app_bar_page: ^2.0.1
   favorite_button: ^0.0.4
   shared_preferences: ^2.0.6
+  intl: ^0.17.0
+  provider: ^5.0.0
 
   
 
@@ -69,7 +76,7 @@ flutter_icons:
 
 # The following section is specific to Flutter.
 flutter:
-
+  generate: true
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 import 'package:getwidget/getwidget.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class Faq extends StatelessWidget {
   Widget build(BuildContext context) {
@@ -12,7 +14,7 @@ class Faq extends StatelessWidget {
           appBar: AppBar(
             iconTheme: IconThemeData(color: Colors.white),
             title: Text(
-              'FAQ',
+              AppLocalizations.of(context).faq,
               style: GoogleFonts.pacifico(
                 textStyle: TextStyle(
                     color: Colors.white, letterSpacing: .5, fontSize: 20),
@@ -30,9 +32,9 @@ class Faq extends StatelessWidget {
             children: <Widget>[
               //1
               GFAccordion(
-                title: 'What is Smart Traveller ?',
+                title: AppLocalizations.of(context).q1,
                 content:
-                    'Smart Traveller is a new concept introduced to Sri Lanka to make public transportation more convenient and efficient',
+                    AppLocalizations.of(context).a1,
                 collapsedIcon: Icon(
                   Icons.arrow_drop_down_outlined,
                   color: Colors.white,
@@ -48,9 +50,9 @@ class Faq extends StatelessWidget {
               ),
               //2
               GFAccordion(
-                title: 'How often do bus pass by ?',
+                title: AppLocalizations.of(context).q2,
                 content:
-                    'Buses of a specific route arrives at a stop at 15 minutes intervals',
+                    AppLocalizations.of(context).a2,
                 collapsedIcon: Icon(
                   Icons.arrow_drop_down_outlined,
                   color: Colors.white,
@@ -66,9 +68,9 @@ class Faq extends StatelessWidget {
               ),
               //3
               GFAccordion(
-                title: 'How can I use the transportation service ?',
+                title: AppLocalizations.of(context).q3,
                 content:
-                    'You are required to have a travel pass which will act as your payment method',
+                    AppLocalizations.of(context).a3,
                 collapsedIcon: Icon(
                   Icons.arrow_drop_down_outlined,
                   color: Colors.white,
@@ -84,9 +86,9 @@ class Faq extends StatelessWidget {
               ),
               //4
               GFAccordion(
-                title: 'Where can I buy a travel pass ?',
+                title: AppLocalizations.of(context).q4,
                 content:
-                    'You can buy a travel pass from any bus station,Keels, Cargills, Arpico outlets',
+                    AppLocalizations.of(context).a4,
                 collapsedIcon: Icon(
                   Icons.arrow_drop_down_outlined,
                   color: Colors.white,
@@ -102,9 +104,9 @@ class Faq extends StatelessWidget {
               ),
               //5
               GFAccordion(
-                title: 'How to topup my travel pass ?',
+                title: AppLocalizations.of(context).q5,
                 content:
-                    'You can topup your travel pass from any bus station,Keels, Cargills, Arpico outlets and partnered shops',
+                    AppLocalizations.of(context).a5,
                 collapsedIcon: Icon(
                   Icons.arrow_drop_down_outlined,
                   color: Colors.white,
@@ -120,9 +122,9 @@ class Faq extends StatelessWidget {
               ),
               //6
               GFAccordion(
-                title: 'How much credit should my travel pass have ?',
+                title: AppLocalizations.of(context).q6,
                 content:
-                    'The minimum credit amount is Rs.30',
+                    AppLocalizations.of(context).a6,
                 collapsedIcon: Icon(
                   Icons.arrow_drop_down_outlined,
                   color: Colors.white,
@@ -136,11 +138,12 @@ class Faq extends StatelessWidget {
                 contentBackgroundColor: Colors.blueGrey[50],
                 textStyle: TextStyle(color: Colors.white),
               ),
+              
               //7
               GFAccordion(
-                title: 'How much credit should my travel pass have ?',
+                title: AppLocalizations.of(context).q7,
                 content:
-                    'The minimum credit amount is Rs.30',
+                    AppLocalizations.of(context).a7,
                 collapsedIcon: Icon(
                   Icons.arrow_drop_down_outlined,
                   color: Colors.white,
@@ -156,9 +159,9 @@ class Faq extends StatelessWidget {
               ),
               //8
               GFAccordion(
-                title: 'Will I loose my credits if my travel pass is being lost ?',
+                title: AppLocalizations.of(context).q8,
                 content:
-                    'No, a travel pass is issued for a NIC or Passport so the credits will be transfered to the new travel pass',
+                    AppLocalizations.of(context).a8,
                 collapsedIcon: Icon(
                   Icons.arrow_drop_down_outlined,
                   color: Colors.white,
@@ -174,27 +177,9 @@ class Faq extends StatelessWidget {
               ),
               //9
               GFAccordion(
-                title: 'Can i get a refund of my credits ?',
+                title: AppLocalizations.of(context).q9,
                 content:
-                    'Yes, you can get refunded your remaining credits amount by returning your travel pass to a bus station, Keels, Cargills or Arpico outlets',
-                collapsedIcon: Icon(
-                  Icons.arrow_drop_down_outlined,
-                  color: Colors.white,
-                ),
-                expandedIcon: Icon(
-                  Icons.arrow_drop_up_outlined,
-                  color: Colors.white,
-                ),
-                collapsedTitleBackgroundColor: Colors.blueAccent,
-                expandedTitleBackgroundColor: Colors.lightBlue[300],
-                contentBackgroundColor: Colors.blueGrey[50],
-                textStyle: TextStyle(color: Colors.white),
-              ),
-              //10
-              GFAccordion(
-                title: 'How can I contact Smart Traveller ?',
-                content:
-                    'You can tap the telephonebooth or the mailbox in the Home Screen',
+                    AppLocalizations.of(context).a9,
                 collapsedIcon: Icon(
                   Icons.arrow_drop_down_outlined,
                   color: Colors.white,

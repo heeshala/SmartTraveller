@@ -7,6 +7,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'dataClass.dart';
 
 class LiveBus extends StatefulWidget {
   @override
@@ -18,6 +20,10 @@ class RouteNumber {
   static String routeName = 'Route';
   static String selectedRoute;
   static bool liked;
+  static String enRoute;
+  static String taRoute;
+  static String siRoute;
+  static String zhRoute;
 }
 
 Future setMapStyle(GoogleMapController controller, BuildContext context) async {
@@ -46,6 +52,11 @@ class _NewMapState extends State<LiveBus> {
 
  List<String> fav = [];
   List<String> gfav = [];
+
+  List<String> enfav = [];
+  List<String> tafav = [];
+  List<String> sifav = [];
+  List<String> zhfav = [];
  
   SharedPreferences prefs;
 
@@ -64,12 +75,33 @@ class _NewMapState extends State<LiveBus> {
 
   void getfav() async{
  prefs = await SharedPreferences.getInstance();
-     gfav = prefs.getStringList('favouriteroutes');
+ if(Data.local=='en'){
+       gfav = prefs.getStringList('enfavouriteroutes');
+       
+    }else if(Data.local=='si'){
+       gfav = prefs.getStringList('sifavouriteroutes');
+       
+    }else if(Data.local=='ta'){
+       gfav = prefs.getStringList('tafavouriteroutes');
+       
+    }else if(Data.local=='zh'){
+       gfav = prefs.getStringList('zhfavouriteroutes');
+       
+    }
+    enfav=prefs.getStringList('enfavouriteroutes');
+    sifav=prefs.getStringList('sifavouriteroutes');
+    tafav=prefs.getStringList('tafavouriteroutes');
+    zhfav=prefs.getStringList('zhfavouriteroutes');
+      
      if(gfav !=null){
         fav=gfav;
         print("not null");
       }else{
         fav= <String>[];
+        enfav=<String>[];
+    sifav=<String>[];
+    tafav=<String>[];
+    zhfav=<String>[];
         print(fav.length);
       }
      
@@ -133,8 +165,12 @@ class _NewMapState extends State<LiveBus> {
         .get()
         .then((value) {
       arr.addAll(value['order']);
-      RouteNumber.routeName = value['number'] + ' ' + value['name'];
-
+      RouteNumber.routeName = value['number'] + ' ' + value['rloc'][Data.local];
+      RouteNumber.enRoute= value['number'] + ' ' + value['rloc']['en'];
+      RouteNumber.siRoute= value['number'] + ' ' + value['rloc']['si'];
+      RouteNumber.taRoute= value['number'] + ' ' + value['rloc']['ta'];
+      RouteNumber.zhRoute= value['number'] + ' ' + value['rloc']['zh'];
+      print(RouteNumber.routeName);
       int val = value['order'].length;
 
       for (int a = 0; a < value['order'].length; a++) {
@@ -226,7 +262,7 @@ class _NewMapState extends State<LiveBus> {
 
                                           TextButton(
                                             child: Text(
-                                                'Passengers ' +
+                                                AppLocalizations.of(context).passengers +
                                                     userDocument['passengers']
                                                         .toString()+'/'+userDocument['seats']
                                                         .toString(),
@@ -240,7 +276,7 @@ class _NewMapState extends State<LiveBus> {
 
                                           TextButton(
                                             child: Text(
-                                                'Speed ' +
+                                                AppLocalizations.of(context).speed +
                                                     userDocument['speed']
                                                         .toString()
                                                         .substring(0, 4) +
@@ -320,7 +356,20 @@ class _NewMapState extends State<LiveBus> {
     return Scaffold(
       appBar: AppBar(
         
-        title: Text(RouteNumber.routeName),
+        title: Row(
+          children: [
+            Expanded(
+              child:Center(
+                child: SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                   child: Text(RouteNumber.routeName,
+       ),
+                ),
+              ),
+                     
+            ),
+          ],
+        ),
         centerTitle: true,
         backgroundColor: Colors.blue,
         leading: IconButton(
@@ -341,13 +390,27 @@ class _NewMapState extends State<LiveBus> {
                   valueChanged: (_isStarred) {
                     if(_isStarred==true){
                       fav.add(RouteNumber.routeName);
-                      prefs.setStringList('favouriteroutes', fav);
-                      var yourList = prefs.getStringList('favouriteroutes');
+                      enfav.add(RouteNumber.enRoute);
+                      sifav.add(RouteNumber.siRoute);
+                      tafav.add(RouteNumber.taRoute);
+                      zhfav.add(RouteNumber.zhRoute);
+                      prefs.setStringList('enfavouriteroutes', enfav);
+                      prefs.setStringList('sifavouriteroutes', sifav);
+                      prefs.setStringList('tafavouriteroutes', tafav);
+                      prefs.setStringList('zhfavouriteroutes', zhfav);
+                      var yourList = prefs.getStringList('zhfavouriteroutes');
                       print(yourList);
                     }else{
                        fav.remove(RouteNumber.routeName);
-                       prefs.setStringList('favouriteroutes', fav);
-                       var yourList = prefs.getStringList('favouriteroutes');
+                       enfav.remove(RouteNumber.enRoute);
+                      sifav.remove(RouteNumber.siRoute);
+                      tafav.remove(RouteNumber.taRoute);
+                      zhfav.remove(RouteNumber.zhRoute);
+                       prefs.setStringList('enfavouriteroutes', enfav);
+                       prefs.setStringList('sifavouriteroutes', sifav);
+                       prefs.setStringList('tafavouriteroutes', tafav);
+                       prefs.setStringList('zhfavouriteroutes', zhfav);
+                       var yourList = prefs.getStringList('tafavouriteroutes');
                       print(yourList);
                       RouteNumber.liked=false;
                     }
@@ -477,7 +540,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                       Center( child:TextButton(
                                         
                                         child: Text(
-                                            'No Bus Scheduled',
+                                            AppLocalizations.of(context).noschedule,
                                             style: TextStyle(
                                               fontSize: 18,
                                               color: Colors.white,

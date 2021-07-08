@@ -1,0 +1,151 @@
+{
+    "language": "English",
+    "@language": {
+      "description": "The current language"
+    },
+    "routes": "Bus Routes",
+    "@routes": {
+      "description": "The routes"
+    },
+    "busstops": "Bus Stops",
+    "@busstops": {
+      "description": "The bus stops"
+    },
+    "faq": "FAQ",
+    "@faq": {
+      "description": "Frequently asked questions"
+    },
+    "mypass": "My Travel Pass",
+    "@mypass": {
+      "description": "personal travel pass"
+    },
+    "favourites": "Favourites",
+    "@favourites": {
+      "description": "favourites list"
+    },
+    "busall": "All Routes",
+    "@busall": {
+      "description": "bus list"
+    },
+    "hintsearch": "Search...",
+    "@hintsearch": {
+      "description": "hint seaarch"
+    },
+    "route": "Route",
+    "@route": {
+      "description": "live tracking route title"
+    },
+    "addfav": "Add Favourites",
+    "@addfav": {
+      "description": "Add Favourites"
+    },
+    "noresult": "No Result Found",
+    "@noresult": {
+      "description": "No Result Found"
+    },
+    "noschedule": "No Bus Scheduled",
+    "@noschedule": {
+      "description": "No Bus Scheduled"
+    },
+    "passengers": "Passengers",
+    "@passengers": {
+      "description": "Passengers"
+    },
+    "speed": "Speed",
+    "@speed": {
+      "description": "Speed"
+    },
+    "q1": "What is Smart Traveller ?",
+    "@q1": {
+      "description": "Question 1"
+    },
+    "a1": "Smart Traveller is a new concept introduced to Sri Lanka to make public transport more convenient and efficient",
+    "@a1": {
+      "description": "Answer 1"
+    },
+    "q2": "How often do a bus pass by ? ",
+    "@q2": {
+      "description": "Question 2"
+    },
+    "a2": "Buses of a specific route arrives at a bus stop at 10-15 minutes intervals",
+    "@a2": {
+      "description": "Answer 2"
+    },
+    "q3": "How can I use the transportation service ? ",
+    "@q3": {
+      "description": "Question 3"
+    },
+    "a3": "You are required to have a travel pass which will act as your payment method",
+    "@a3": {
+      "description": "Answer 3"
+    },
+    "q4": "Where can I buy a travel pass ? ",
+    "@q4": {
+      "description": "Question 4"
+    },
+    "a4": "You can buy a travel pass from any bus station,Keels, Cargills, Arpico outlets",
+    "@a4": {
+      "description": "Answer 4"
+    },
+    "q5": "How can I top up my travel pass ? ",
+    "@q5": {
+      "description": "Question 5"
+    },
+    "a5": "You can top up your travel pass from any bus station,Keels, Cargills, Arpico outlets, partnered shops and bus drivers",
+    "@a5": {
+      "description": "Answer 5"
+    },
+    "q6": "How much credit should my travel pass have ? ",
+    "@q6": {
+      "description": "Question 6"
+    },
+     "a6": "The minimum credit amount is Rs.30",
+    "@a6": {
+      "description": "Answer 6"
+    },
+    "q7": "Will I lose my credits if my travel pass is being lost ?",
+    "@q7": {
+      "description": "Question 7"
+    },
+    "a7": "No, a travel pass is issued for a NIC or Passport so the credits will be transferred to the new travel pass",
+    "@a7": {
+      "description": "Answer 7"
+    },
+    "q8": "Can i get a refund of my credits ?",
+    "@q8": {
+      "description": "Question 8"
+    },
+    "a8": "Yes, you can get refunded your remaining credits amount by returning your travel pass to a bus station, Keels, Cargills or Arpico outlets",
+    "@a8": {
+      "description": "Answer 8"
+    },
+    "q9": "How can I contact Smart Traveller ?",
+    "@q9": {
+      "description": "Question 9"
+    },
+    "a9": "You can send an email to contact@smarttraveller.lk",
+    "@a9": {
+      "description": "Answer 9"
+    },
+    "tap": "Tap Your Travel Pass",
+    "@tap": {
+      "description": "Tap Your Travel Pass"
+    },
+    "tapsearch": "Reading...",
+    "@tapsearch": {
+      "description": "Tap Search"
+    },
+    "remaining": "Remaining Credit Amount",
+    "@remaining": {
+      "description": "Remaining Credit Amount"
+    },
+    "invalid": "Invalid Travel Pass",
+    "@invalid": {
+      "description": "Invalid Travel Pass"
+    },
+    "rs": "Rs.",
+    "@rs": {
+      "description": "Rs"
+    }
+
+}
