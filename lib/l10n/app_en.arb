@@ -146,6 +146,38 @@
     "rs": "Rs.",
     "@rs": {
       "description": "Rs"
+    },
+    "notCompatible": "Your Device is Not Compatible for this Service",
+    "@rs": {
+      "description": "notCompatible"
+    },
+    "important": "❗ Important ❗",
+    "@important": {
+      "description": "Important"
+    },
+    "il1": "Your Safety is our Priority",
+    "@il1": {
+      "description": "Your Safety is our Priority"
+    },
+    "il2": "Always wear a mask when using public transport to protect yourself and others from the ongoing Covid-19 pandemic 😷",
+    "@il2": {
+      "description": "Line 2"
+    },
+    "il3": "📞 Public Complaint",
+    "@il3": {
+      "description": "Line 3"
+    },
+    "il4": "📞 Colombo Private Bus Stand",
+    "@il4": {
+      "description": "Line 4"
+    },
+    "smartest": "Smartest way to travel in Sri Lanka",
+    "@smartest": {
+      "description": "smartest"
+    },
+    "moreinfo": "More Information",
+    "@moreinfo": {
+      "description": "moreinfo"
     }
 
 }

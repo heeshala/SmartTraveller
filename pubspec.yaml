@@ -58,7 +58,9 @@ dependencies:
   shared_preferences: ^2.0.6
   intl: ^0.17.0
   provider: ^5.0.0
-
+  accordion: ^1.0.4
+  nfc_manager: ^3.1.0
+  country_icons: ^2.0.2
   
 
 dev_dependencies:
@@ -94,7 +96,9 @@ flutter:
     - assets/images/navigation.png
     - assets/images/home.png
     - assets/images/2.png
-    
+    - assets/images/2223-01.png
+    - assets/images/b2-01.png
+    - assets/images/bghome-01.png
     
   # To add assets to your application, add an assets section, like this:
   # assets:

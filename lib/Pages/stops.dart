@@ -48,26 +48,39 @@ class _NewMapState extends State<Stops> {
          LocationPermission permission;
          
          permission = await Geolocator.checkPermission();
-         if (permission == LocationPermission.deniedForever) {
-           lat = 6.9271;
-        long = 79.8612;
-         }
-    
-         else if (permission == LocationPermission.denied) {
-           permission = await Geolocator.requestPermission();
-         if (permission != LocationPermission.whileInUse &&
-            permission != LocationPermission.always) {
-            lat = 6.9271;
-        long = 79.8612;
-            }
-        }
-        else {
-          Position res = await Geolocator.getCurrentPosition(desiredAccuracy: 
-          LocationAccuracy.high); 
+    if (permission == LocationPermission.deniedForever) {
+      lat = 6.9271;
+      long = 79.8612;
+    } else if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission != LocationPermission.whileInUse &&
+          permission != LocationPermission.always) {
+            setState(() {
+              lat = 6.9271;
+              long = 79.8612;
+              
+            });
         
-          lat=res.latitude;
-          long=res.longitude;          
-        }
+      }else{
+        Position res = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        setState(() {
+        lat = res.latitude;
+        long = res.longitude;
+        });
+      }
+    } else {
+      try {
+        Position res = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+
+        lat = res.latitude;
+        long = res.longitude;
+      } catch (Exception) {
+        lat = 6.9271;
+        long = 79.8612;
+      }
+    }
         
         populateClients();
         setCustomMapPin();
@@ -89,7 +102,7 @@ class _NewMapState extends State<Stops> {
 
   void initMarker(tomb, tombId) {
     
-    var stopname = tomb[Data.local];
+    var stopname = tomb["sloc"][Data.local];
     print(stopname);
     var markerIdVal = tombId;
     final MarkerId markerId = MarkerId(markerIdVal);
@@ -115,12 +128,32 @@ class _NewMapState extends State<Stops> {
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
+       extendBodyBehindAppBar: true,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text(AppLocalizations.of(context).busstops,style:GoogleFonts.pacifico(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 20),),),
+        title: Text(AppLocalizations.of(context).busstops,textScaleFactor: 1.0,style:GoogleFonts.nunito(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 28,),),),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        flexibleSpace: Container(
+               decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                    colors: [
+                      Color(0xFF5677ba),
+                      Color(0xFF63b6e2)
+                    ],
+                    begin: FractionalOffset.topLeft,
+                    end: FractionalOffset.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+            ),
+        backgroundColor: Colors.transparent,
+        elevation: 0.0,
+        leading: IconButton(
+              icon: Icon(Icons.navigate_before, color: Colors.white),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
       ),
       body: mapWidget(),
     );
@@ -187,9 +220,9 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(stopname,
+                  child: Text(stopname,textScaleFactor: 1.0,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20)),
+                      style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:20),)),
                 ),
                 StreamBuilder(
                     stream: FirebaseFirestore.instance
@@ -223,11 +256,8 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                     ),
                                   ),
                                   
-                                  Text((userDocument["rloc"][Data.local][i].toString()),
-                                      style: TextStyle(
-                                        fontSize: 25,
-                                        color: Colors.white,
-                                      )),
+                                  Text((userDocument["rloc"][Data.local][i].toString()),textScaleFactor: 1.0,
+                                      style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:25,color: Colors.white),)),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -237,11 +267,8 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                       Center( child:TextButton(
                                         
                                         child: Text(
-                                            AppLocalizations.of(context).noschedule,
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white,
-                                            )),
+                                            AppLocalizations.of(context).noschedule,textScaleFactor: 1.0,
+                                            style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
                                         onPressed: () {/* ... */},
                                       )),//add text here
                                      
@@ -252,11 +279,8 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                       TextButton(
                                         child: Text(
                                             userDocument["times"]['$i'][l]
-                                                .toString(),
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white,
-                                            )),
+                                                .toString(),textScaleFactor: 1.0,
+                                            style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
                                         onPressed: () {/* ... */},
                                       ),
                                       const SizedBox(width: 8),
@@ -269,11 +293,8 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                       TextButton(
                                         child: Text(
                                             userDocument["times"]['$i'][l]
-                                                .toString(),
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white,
-                                            )),
+                                                .toString(),textScaleFactor: 1.0,
+                                            style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
                                         onPressed: () {/* ... */},
                                       ),
                                       const SizedBox(width: 8),

@@ -34,10 +34,10 @@ class _NewMapState extends State<Routes> {
   
   Widget appBarTitle = new Text(
     "Routes",
-    
-    style: GoogleFonts.pacifico(
+    textScaleFactor: 1.0,
+    style: GoogleFonts.nunito(
       textStyle:
-          TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+          TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 25),
     ),
   );
   final key = new GlobalKey<ScaffoldState>();
@@ -60,39 +60,39 @@ class _NewMapState extends State<Routes> {
     if(Data.local=='en'){
           this.appBarTitle = new Text(
         
-        "Routes",
-        style: GoogleFonts.pacifico(
+        "Routes",textScaleFactor: 1.0,
+        style: GoogleFonts.nunito(
           textStyle:
-              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+              TextStyle(color: Colors.white, letterSpacing: .5,  fontSize: 25),
         ),
       );
         }else if(Data.local=='si'){
            this.appBarTitle = new Text(
         
-        "මාර්ග",
-        style: GoogleFonts.pacifico(
+        "මාර්ග",textScaleFactor: 1.0,
+        style: GoogleFonts.nunito(
           textStyle:
-              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 25),
         ),
       );
 
         }else if(Data.local=='ta'){
            this.appBarTitle = new Text(
         
-        "வழிகள்",
-        style: GoogleFonts.pacifico(
+        "வழிகள்",textScaleFactor: 1.0,
+        style: GoogleFonts.nunito(
           textStyle:
-              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 25),
         ),
       );
 
         }else if(Data.local=='zh'){
            this.appBarTitle = new Text(
         
-        "路线",
-        style: GoogleFonts.pacifico(
+        "路线",textScaleFactor: 1.0,
+        style: GoogleFonts.nunito(
           textStyle:
-              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 25),
         ),
       );
         }
@@ -208,10 +208,13 @@ class _NewMapState extends State<Routes> {
                         color: Colors.white,
                       );
                       this.appBarTitle = new TextField(
+                        autofocus: true,
                         controller: _searchQuery,
-                        style: new TextStyle(
-                          color: Colors.white,
-                        ),
+                        style: GoogleFonts.nunito(
+          textStyle:
+              TextStyle(color: Colors.white),
+        ),
+                        
                         decoration: new InputDecoration(
                             prefixIcon:
                                 new Icon(Icons.search, color: Colors.white),
@@ -227,26 +230,56 @@ class _NewMapState extends State<Routes> {
               ),
             ],
             bottom: TabBar(
+             labelStyle: GoogleFonts.nunito(
+          textStyle:
+              TextStyle(color: Colors.white,fontWeight: FontWeight.bold,fontSize: 18),
+            ),
+             unselectedLabelStyle: GoogleFonts.nunito(
+          textStyle:
+              TextStyle(fontSize: 15),
+            ),
+              unselectedLabelColor: Colors.blueGrey[100],
+              indicator: UnderlineTabIndicator(
+          borderSide: BorderSide(width: 2.0,color: Color(0xff025190)),
+          insets: EdgeInsets.symmetric(horizontal:20.0)
+        ),
               tabs: [
                 Tab(
                   icon: Icon(Icons.star),
-                  text: AppLocalizations.of(context).favourites,
+                  child: Text(AppLocalizations.of(context).favourites,textScaleFactor: 1.0),
+                  
                 ),
                 Tab(
                   icon: Icon(Icons.directions_bus),
-                  text: AppLocalizations.of(context).busall,
+                  child: Text(AppLocalizations.of(context).busall,textScaleFactor: 1.0),
+                  
                 ),
               ],
             ),
             title: appBarTitle,
             centerTitle: true,
-            flexibleSpace: Image(
+            /*flexibleSpace: Image(
               image: AssetImage('assets/images/2.png'),
               fit: BoxFit.cover,
+            ),*/
+            flexibleSpace: Container(
+               decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                    colors: [
+                       Color(0xFF5677ba),
+                      Color(0xFF63b6e2)
+                    ],
+                    begin: FractionalOffset.topLeft,
+                    end: FractionalOffset.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
             ),
+            elevation: 0.0,
+            
             backgroundColor: Colors.transparent,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
+              icon: Icon(Icons.navigate_before, color: Colors.white),
               onPressed: () => Navigator.of(context).pop(),
             ),
           ),
@@ -352,15 +385,15 @@ class _NewMapState extends State<Routes> {
                             child: Align(
                                 alignment: Alignment.center,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(top: 8.0),
+                                  padding: const EdgeInsets.only(top: 12.0,bottom: 12.0),
                                   child: Row(
                                     children: <Widget>[
                                       Expanded(
                                         child: Marquee(
                                           text: item[index]['number'] +
                                               " ⋮ " +
-                                              item[index]['rloc'][Data.local],
-                                          style: TextStyle(fontSize: 22),
+                                              item[index]['rloc'][Data.local],textScaleFactor: 1.0,
+                                          style: GoogleFonts.nunito(textStyle: TextStyle(fontSize: 20)),
                                           scrollAxis: Axis.horizontal,
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
@@ -382,13 +415,19 @@ class _NewMapState extends State<Routes> {
               } else {
                 return Center(
                     child: Container(
-                  child: Text(AppLocalizations.of(context).addfav),
+                  child: Text(AppLocalizations.of(context).addfav,textScaleFactor: 1.0,style: GoogleFonts.nunito(
+          textStyle:
+              TextStyle(fontSize: 20),
+            ),),
                 ));
               }
             } else {
               return Center(
                   child: Container(
-                child: Text(AppLocalizations.of(context).addfav),
+                child: Text(AppLocalizations.of(context).addfav,textScaleFactor: 1.0,style: GoogleFonts.nunito(
+          textStyle:
+              TextStyle(fontSize: 20),
+            ),),
               ));
             }
           }
@@ -453,15 +492,15 @@ class _NewMapState extends State<Routes> {
                   child: Align(
                       alignment: Alignment.center,
                       child: Padding(
-                        padding: const EdgeInsets.only(top: 8.0),
+                        padding: const EdgeInsets.only(top: 12.0,bottom: 12.0),
                         child: Row(
                           children: <Widget>[
                             Expanded(
                               child: Marquee(
                                 text: document['number'] +
                                     " ⋮ " +
-                                    document['rloc'][Data.local],
-                                style: TextStyle(fontSize: 22),
+                                    document['rloc'][Data.local],textScaleFactor: 1.0,
+                                style: GoogleFonts.nunito(textStyle: TextStyle(fontSize: 20)),
                                 scrollAxis: Axis.horizontal,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 blankSpace: 20.0,
@@ -529,15 +568,32 @@ class _NewMapState extends State<Routes> {
 
                         return Center(
                           child: Container(
-                            margin: const EdgeInsets.fromLTRB(20, 20, 20, 15),
-                            height: 50,
-                            child: RaisedButton(
-                              textColor: Colors.white,
-                              color: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                                side: BorderSide(color: Colors.blue),
-                              ),
+                              decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                    colors: [
+                      Color(0xFF5ea0d3),
+                      Color(0xFF60acda),
+                      Color(0xFF64c1e8)
+                    ],
+                    begin: FractionalOffset.topLeft,
+                    end: FractionalOffset.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                margin: const EdgeInsets.fromLTRB(20, 20, 20, 15),
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.transparent,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.blue),
+                    ),
+                  ),
+                  
                               onPressed: () {
                                 var id = item[index].id;
                                 RouteNumber.route = id;
@@ -568,8 +624,8 @@ class _NewMapState extends State<Routes> {
                                           child: Marquee(
                                             text: item[index]['number'] +
                                                 " ⋮ " +
-                                                item[index]['rloc'][Data.local],
-                                            style: TextStyle(fontSize: 22),
+                                                item[index]['rloc'][Data.local],textScaleFactor: 1.0,
+                                           style: GoogleFonts.nunito(textStyle: TextStyle(fontSize: 20)),
                                             scrollAxis: Axis.horizontal,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -591,13 +647,19 @@ class _NewMapState extends State<Routes> {
                 } else {
                   return Center(
                       child: Container(
-                    child: Text(AppLocalizations.of(context).noresult),
+                    child: Text(AppLocalizations.of(context).noresult,textScaleFactor: 1.0,style: GoogleFonts.nunito(
+          textStyle:
+              TextStyle(fontSize: 20),
+            ),)
                   ));
                 }
               } else {
                 return Center(
                     child: Container(
-                  child: Text(AppLocalizations.of(context).noresult),
+                  child: Text(AppLocalizations.of(context).noresult,textScaleFactor: 1.0,style: GoogleFonts.nunito(
+          textStyle:
+              TextStyle(fontSize: 20),
+            ),)
                 ));
               }
             }
@@ -648,15 +710,32 @@ class _NewMapState extends State<Routes> {
 
                         return Center(
                           child: Container(
-                            margin: const EdgeInsets.fromLTRB(20, 20, 20, 15),
-                            height: 50,
-                            child: RaisedButton(
-                              textColor: Colors.white,
-                              color: Colors.blue,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(18.0),
-                                side: BorderSide(color: Colors.blue),
-                              ),
+                              decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                    colors: [
+                      Color(0xFF5ea0d3),
+                      Color(0xFF60acda),
+                      Color(0xFF64c1e8)
+                    ],
+                    begin: FractionalOffset.topLeft,
+                    end: FractionalOffset.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(18),
+                ),
+                margin: const EdgeInsets.fromLTRB(20, 20, 20, 15),
+                height: 50,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.transparent,
+                    textStyle: TextStyle(
+                      color: Colors.white,
+                    ),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(18.0),
+                      side: BorderSide(color: Colors.blue),
+                    ),
+                  ),
+                  
                               onPressed: () {
                                 var id = item[index].id;
                                 RouteNumber.route = id;
@@ -680,15 +759,15 @@ class _NewMapState extends State<Routes> {
                               child: Align(
                                   alignment: Alignment.center,
                                   child: Padding(
-                                    padding: const EdgeInsets.only(top: 8.0),
+                                    padding: const EdgeInsets.only(top: 12.0,bottom: 12.0),
                                     child: Row(
                                       children: <Widget>[
                                         Expanded(
                                           child: Marquee(
                                             text: item[index]['number'] +
                                                 " ⋮ " +
-                                                item[index]['rloc'][Data.local],
-                                            style: TextStyle(fontSize: 22),
+                                                item[index]['rloc'][Data.local],textScaleFactor: 1.0,
+                                            style: GoogleFonts.nunito(textStyle: TextStyle(fontSize: 20)),
                                             scrollAxis: Axis.horizontal,
                                             crossAxisAlignment:
                                                 CrossAxisAlignment.start,
@@ -710,13 +789,20 @@ class _NewMapState extends State<Routes> {
                 } else {
                   return Center(
                       child: Container(
-                    child: Text(AppLocalizations.of(context).noresult),
+                        
+                    child: Text(AppLocalizations.of(context).noresult,textScaleFactor: 1.0,style: GoogleFonts.nunito(
+          textStyle:
+              TextStyle(fontSize: 20),
+            ),),
                   ));
                 }
               } else {
                 return Center(
                     child: Container(
-                  child: Text(AppLocalizations.of(context).noresult),
+                  child: Text(AppLocalizations.of(context).noresult,textScaleFactor: 1.0,style: GoogleFonts.nunito(
+          textStyle:
+              TextStyle(fontSize: 20),
+            ),),
                 ));
               }
             }
@@ -741,39 +827,39 @@ class _NewMapState extends State<Routes> {
       if(Data.local=='en'){
           this.appBarTitle = new Text(
         
-        "Routes",
-        style: GoogleFonts.pacifico(
+        "Routes",textScaleFactor: 1.0,
+        style: GoogleFonts.nunito(
           textStyle:
-              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 25),
         ),
       );
         }else if(Data.local=='si'){
            this.appBarTitle = new Text(
         
-        "මාර්ග",
-        style: GoogleFonts.pacifico(
+        "මාර්ග",textScaleFactor: 1.0,
+        style: GoogleFonts.nunito(
           textStyle:
-              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 25),
         ),
       );
 
         }else if(Data.local=='ta'){
            this.appBarTitle = new Text(
         
-        "வழிகள்",
-        style: GoogleFonts.pacifico(
+        "வழிகள்",textScaleFactor: 1.0,
+        style: GoogleFonts.nunito(
           textStyle:
-              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 25),
         ),
       );
 
         }else if(Data.local=='zh'){
            this.appBarTitle = new Text(
         
-        "路线",
-        style: GoogleFonts.pacifico(
+        "路线",textScaleFactor: 1.0,
+        style: GoogleFonts.nunito(
           textStyle:
-              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 25),
         ),
       );
 
@@ -790,6 +876,6 @@ class ChildItem extends StatelessWidget {
   ChildItem(this.name);
   @override
   Widget build(BuildContext context) {
-    return new ListTile(title: new Text(this.name));
+    return new ListTile(title: new Text(this.name,textScaleFactor: 1.0,));
   }
 }

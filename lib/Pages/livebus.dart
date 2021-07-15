@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:favorite_button/favorite_button.dart';
@@ -253,38 +254,32 @@ class _NewMapState extends State<LiveBus> {
                                           ),
                                         ),
                                         Text((markerIdVal),
-                                            style: TextStyle(
-                                              fontSize: 25,
-                                              color: Colors.white,
-                                            )),
+                                        textScaleFactor: 1.0,
+                                            style: GoogleFonts.nunito(textStyle:TextStyle(fontSize: 25),)),
                                         Row(mainAxisAlignment: MainAxisAlignment.center,children: [
                                           // this creates scat.length many elements inside the Column
 
                                           TextButton(
                                             child: Text(
-                                                AppLocalizations.of(context).passengers +
+                                                AppLocalizations.of(context).passengers +" "+
                                                     userDocument['passengers']
                                                         .toString()+'/'+userDocument['seats']
                                                         .toString(),
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.white,
-                                                )),
+                                                        textScaleFactor: 1.0,
+                                                style: GoogleFonts.nunito(textStyle:TextStyle(fontSize: 18,color: Colors.white),)),
                                             onPressed: () {/* ... */},
                                           ),
                                           const SizedBox(width: 8),
 
                                           TextButton(
                                             child: Text(
-                                                AppLocalizations.of(context).speed +
+                                                AppLocalizations.of(context).speed +" "+
                                                     userDocument['speed']
                                                         .toString()
                                                         .substring(0, 4) +
                                                     ' km/h',
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.white,
-                                                )),
+                                                    textScaleFactor: 1.0,
+                                                style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
                                             onPressed: () {/* ... */},
                                           ),
                                           const SizedBox(width: 8),
@@ -325,7 +320,7 @@ class _NewMapState extends State<LiveBus> {
   }
 
   void initMarker(tomb, tombId) {
-    var stopname = tomb['name'];
+    var stopname = tomb["sloc"][Data.local];
     var markerIdVal = tombId;
     final MarkerId markerId = MarkerId(markerIdVal);
 
@@ -354,6 +349,7 @@ class _NewMapState extends State<LiveBus> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBodyBehindAppBar: true,
       appBar: AppBar(
         
         title: Row(
@@ -363,17 +359,35 @@ class _NewMapState extends State<LiveBus> {
                 child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                    child: Text(RouteNumber.routeName,
-       ),
+       textScaleFactor: 1.0,
+       style: GoogleFonts.nunito(
+          textStyle:
+              TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
+        ),),
                 ),
               ),
                      
             ),
           ],
         ),
+        flexibleSpace: Container(
+               decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                    colors: [
+                      Color(0xFF5677ba),
+                      Color(0xFF63b6e2)
+                    ],
+                    begin: FractionalOffset.topLeft,
+                    end: FractionalOffset.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+            ),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        elevation: 0.0,
+        backgroundColor: Colors.transparent,
         leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
+              icon: Icon(Icons.navigate_before, color: Colors.white),
               onPressed: () => {
                 timer.cancel(),
                 Navigator.of(context).pop(),
@@ -491,9 +505,9 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(8.0),
-                  child: Text(stopname,
+                  child: Text(stopname,textScaleFactor: 1.0,
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 20)),
+                      style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:20),)),
                 ),
                 StreamBuilder(
                     stream: FirebaseFirestore.instance
@@ -527,11 +541,8 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                         color: Colors.white,
                                       ),
                                     ),
-                                    Text((userDocument["routes"][i].toString()),
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          color: Colors.white,
-                                        )),
+                                    Text((userDocument["routes"][i].toString()),textScaleFactor: 1.0,
+                                        style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:25,color: Colors.white),)),
                                     Row(mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                     // this creates scat.length many elements inside the Column
@@ -540,11 +551,8 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                       Center( child:TextButton(
                                         
                                         child: Text(
-                                            AppLocalizations.of(context).noschedule,
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white,
-                                            )),
+                                            AppLocalizations.of(context).noschedule,textScaleFactor: 1.0,
+                                            style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
                                         onPressed: () {/* ... */},
                                       )),//add text here
                                      
@@ -555,7 +563,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                       TextButton(
                                         child: Text(
                                             userDocument["times"]['$i'][l]
-                                                .toString(),
+                                                .toString(),textScaleFactor: 1.0,
                                             style: TextStyle(
                                               fontSize: 18,
                                               color: Colors.white,
@@ -572,11 +580,8 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                       TextButton(
                                         child: Text(
                                             userDocument["times"]['$i'][l]
-                                                .toString(),
-                                            style: TextStyle(
-                                              fontSize: 18,
-                                              color: Colors.white,
-                                            )),
+                                                .toString(),textScaleFactor: 1.0,
+                                            style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
                                         onPressed: () {/* ... */},
                                       ),
                                       const SizedBox(width: 8),

@@ -10,7 +10,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart_traveller/provider/local_provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:nfc_manager/nfc_manager.dart';
 
 
 class NfcScan extends StatefulWidget {
@@ -21,8 +21,9 @@ class NfcScan extends StatefulWidget {
 }
 
 String cardId;
-String status="Tap Your Travel Pass";
+String status;
 String balance="";
+String notCompatible="";
 IconData nfcIcon=Icons.cast;
 
 class _NfcScanState extends State<NfcScan> {
@@ -30,39 +31,61 @@ class _NfcScanState extends State<NfcScan> {
    Widget build(BuildContext context) {
      
     return MaterialApp(
-      home: DefaultTabController(
-        length: 2,
-        child: Scaffold(
+      
+      
+        home: Scaffold(
           appBar: AppBar(
             iconTheme: IconThemeData(color: Colors.white),
+            
             title: Text(
-              AppLocalizations.of(context).mypass,
-              style: GoogleFonts.pacifico(
-                textStyle: TextStyle(
-                    color: Colors.white, letterSpacing: .5, fontSize: 20),
+              AppLocalizations.of(context).mypass,textScaleFactor: 1.0,
+              style: GoogleFonts.nunito(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 25),)
               ),
-            ),
+            
             centerTitle: true,
-            backgroundColor: Colors.blue,
+           flexibleSpace: Container(
+               decoration: new BoxDecoration(
+                  gradient: new LinearGradient(
+                    colors: [
+                      Color(0xFF5677ba),
+                      Color(0xFF63b6e2)
+                    ],
+                    begin: FractionalOffset.topLeft,
+                    end: FractionalOffset.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                ),
+            ),
+         backgroundColor: Colors.transparent,
+        elevation: 0.0,
             leading: IconButton(
-              icon: Icon(Icons.arrow_back, color: Colors.white),
+              icon: Icon(Icons.navigate_before, color: Colors.white),
               onPressed: () => back(),
             ),
           ),
           body: bodyWidget(),
         ),
-      ),
     );
+      
   }
  
   @override
   initState() {
+    
+     setStatus();
+     WidgetsBinding.instance.addPostFrameCallback((_) async {
+       setState(() {
+        status=AppLocalizations.of(context).tap;
+        balance="";
+        
+      });
+      
+    });
     super.initState();
    
-   status=AppLocalizations.of(context).tap;
  balance="";
  nfcIcon=Icons.cast;
-    
+   
     FlutterNfcReader.onTagDiscovered().listen((onData) {
       setState(() {
         status=AppLocalizations.of(context).tapsearch;
@@ -72,12 +95,27 @@ class _NfcScanState extends State<NfcScan> {
       
       
       cardId=onData.id.toString();
+      
       checkcard();
       
     });
   }
 
+void setStatus() async{
+  String result;
+  bool isAvailable = await NfcManager.instance.isAvailable();
+  if(!isAvailable){
+     result=AppLocalizations.of(context).notCompatible;
+  }else{
+    result="";
+  }
 
+  setState(() {
+        notCompatible=result;
+        
+        
+      });
+}
 
   @override
   void dispose() {
@@ -97,9 +135,9 @@ class _NfcScanState extends State<NfcScan> {
               padding: const EdgeInsets.only(top: 50.00),
 
               child:Text(
-                '$status',
+                '$status',textScaleFactor: 1.0,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.philosopher(
+                style: GoogleFonts.nunito(
                   textStyle: TextStyle(
                       color: Colors.blue[900],
                       letterSpacing: .5,
@@ -112,9 +150,10 @@ class _NfcScanState extends State<NfcScan> {
               padding: const EdgeInsets.only(top: 50.00),
 
               child: Text(
-                '$balance',
+                '$balance',textScaleFactor: 1.0,
                 textAlign: TextAlign.center,
-                style: GoogleFonts.philosopher(
+                
+                style: GoogleFonts.nunito(
                   textStyle: TextStyle(
                       color: Colors.teal[900],
                       letterSpacing: .5,
@@ -128,6 +167,24 @@ class _NfcScanState extends State<NfcScan> {
               padding: const EdgeInsets.only(top: 60.00),
               child: Transform.rotate(angle: 270 * pi/180,child: Icon(nfcIcon, color: Colors.blue,size: 150,)),
             ),
+           Spacer(),
+            Padding(
+              padding: const EdgeInsets.only(bottom: 50.00),
+
+              child: Text(
+                '$notCompatible',textScaleFactor: 1.0,
+                textAlign: TextAlign.center,
+                
+                style: GoogleFonts.nunito(
+                  textStyle: TextStyle(
+                      color: Colors.red,
+                      letterSpacing: .5,
+                      fontSize: 20,
+                      
+                      ),
+                 
+            ))),
+
             
 
 
@@ -184,6 +241,7 @@ void checkcard(){
           context: context,
           type: CoolAlertType.error,
           text: AppLocalizations.of(context).invalid,
+          
          
         );
       
@@ -200,6 +258,7 @@ void back(){
   status=AppLocalizations.of(context).tap;
  balance="";
  nfcIcon=Icons.cast;
+ 
 }
 
 
