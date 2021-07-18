@@ -44,7 +44,7 @@ dependencies:
   flutter_spinkit: ^5.0.0 
   flutter_polyline_points: ^1.0.0
   marquee: ^2.2.0
-  
+  location: ^4.2.0
   google_fonts: ^2.1.0
   getwidget: ^2.0.2
   flutter_nfc_reader: ^0.1.0
@@ -61,7 +61,7 @@ dependencies:
   accordion: ^1.0.4
   nfc_manager: ^3.1.0
   country_icons: ^2.0.2
-  
+  flutter_animarker: ^3.2.0
 
 dev_dependencies:
   flutter_test:
@@ -85,20 +85,17 @@ flutter:
   uses-material-design: true
 
   assets:
-    - assets/images/background.png
+   
     - assets/images/bus-stop.png
     - assets/images/bus.png
+    
     - assets/images/nav.png
     - assets/images/smartbus.png
     - assets/maps/map_style.json
-    - assets/images/train.gif
-    - assets/images/tapnfc.png
-    - assets/images/navigation.png
-    - assets/images/home.png
-    - assets/images/2.png
+   
     - assets/images/2223-01.png
     - assets/images/b2-01.png
-    - assets/images/bghome-01.png
+
     
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -237,7 +237,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
 
                       return Column(children: [
                         for (var i = 0;
-                            i < userDocument['routes'].length;
+                            i < userDocument["rloc"][Data.local].length;
                             i++) ...[
                               
                           Padding(

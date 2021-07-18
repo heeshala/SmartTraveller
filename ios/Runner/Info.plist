@@ -43,6 +43,11 @@
 	<false/>
      <key>NSLocationWhenInUseUsageDescription</key>
      <string>SmartTraveller needs access to your location.</string>
+	 <key>NSLocationAlwaysUsageDescription</key>
+   <string>SmartTraveller needs access to location when in the background.</string>
+
+   <key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+   <string>SmartTraveller access to location when open and in the background.</string>
 	 
 
 </dict>

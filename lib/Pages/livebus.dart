@@ -47,7 +47,8 @@ class _NewMapState extends State<LiveBus> {
 
   Map<MarkerId, Marker> markers = <MarkerId, Marker>{};
   BitmapDescriptor pinLocationIcon;
-  BitmapDescriptor busIcon;
+  BitmapDescriptor busicon;
+  
   var lat;
   var long;
 
@@ -68,9 +69,12 @@ class _NewMapState extends State<LiveBus> {
     
     super.initState();
     
-    timer =
-        Timer.periodic(Duration(milliseconds: 1000), (Timer t) => refresh());
+   timer =
+        Timer.periodic(Duration(milliseconds: 500), (Timer t) => travel());
     reloadCurrentLocation = getCurrentLocation();
+
+    print("object");
+    
     
   }
 
@@ -145,16 +149,18 @@ class _NewMapState extends State<LiveBus> {
 
         lat = res.latitude;
         long = res.longitude;
+        
       } catch (Exception) {
         lat = 6.9271;
         long = 79.8612;
       }
     }
     getfav();
+   
     populateClients();
     
     setCustomMapPin();
-
+    
     return _child = mapWidget();
   }
 
@@ -184,12 +190,16 @@ class _NewMapState extends State<LiveBus> {
         });
       }
 
-      travel();
+      //travel();
+      
     });
   }
 
+
+
   //Livebus
   var buslist = List();
+ 
   void travel() {
     buslist.clear();
     FirebaseFirestore.instance.collection("bus").get().then((value) {
@@ -206,11 +216,14 @@ class _NewMapState extends State<LiveBus> {
             var markerIdVal = value.docs[b].id;
             
             final MarkerId markerId = MarkerId(markerIdVal);
-
+            
+            
+            
             final Marker marker = Marker(
               markerId: markerId,
               position: LatLng(latitude, longitude),
-              icon: busIcon,
+              icon: busicon,
+              
               onTap: () {
                 showModalBottomSheet(
                     shape: RoundedRectangleBorder(
@@ -255,7 +268,7 @@ class _NewMapState extends State<LiveBus> {
                                         ),
                                         Text((markerIdVal),
                                         textScaleFactor: 1.0,
-                                            style: GoogleFonts.nunito(textStyle:TextStyle(fontSize: 25),)),
+                                            style: GoogleFonts.nunito(textStyle:TextStyle(fontSize: 25,color: Colors.white),)),
                                         Row(mainAxisAlignment: MainAxisAlignment.center,children: [
                                           // this creates scat.length many elements inside the Column
 
@@ -296,10 +309,20 @@ class _NewMapState extends State<LiveBus> {
                     });
               },
             );
-
+               
             setState(() {
               markers[markerId] = marker;
+              
             });
+          }else{
+            if (buslist.isNotEmpty) {
+      
+        setState(() {
+          markers.removeWhere(
+              (key, marker) => marker.markerId.value == value.docs[b].id);
+        });
+      
+    }
           }
         }
       }
@@ -309,10 +332,10 @@ class _NewMapState extends State<LiveBus> {
   void refresh() {
     if (buslist.isNotEmpty) {
       for (int m = 0; m < buslist.length; m++) {
-        setState(() {
+        /*setState(() {
           markers.removeWhere(
               (key, marker) => marker.markerId.value == buslist[m]);
-        });
+        });*/
       }
     }
 
@@ -342,8 +365,9 @@ class _NewMapState extends State<LiveBus> {
         ImageConfiguration(devicePixelRatio: 10.5),
         'assets/images/bus-stop.png');
 
-    busIcon = await BitmapDescriptor.fromAssetImage(
+    busicon = await BitmapDescriptor.fromAssetImage(
         ImageConfiguration(devicePixelRatio: 10.5), 'assets/images/bus.png');
+    
   }
 
   @override
@@ -485,6 +509,7 @@ class _NewMapState extends State<LiveBus> {
                 SizedBox(
                   height: 26,
                 ),
+                
               ],
             );
           }
@@ -522,9 +547,9 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
 
                       return Column(children: [
                         for (var i = 0;
-                            i < userDocument['routes'].length;
+                            i < userDocument['rloc'][Data.local].length;
                             i++) ...[
-                          if (userDocument["routes"][i].toString() ==
+                          if (userDocument["rloc"][Data.local][i].toString() ==
                               RouteNumber.routeName) ...[
                             Padding(
                               padding:
@@ -541,7 +566,7 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
                                         color: Colors.white,
                                       ),
                                     ),
-                                    Text((userDocument["routes"][i].toString()),textScaleFactor: 1.0,
+                                    Text((userDocument["rloc"][Data.local][i].toString()),textScaleFactor: 1.0,
                                         style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:25,color: Colors.white),)),
                                     Row(mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
