@@ -20,11 +20,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _NewHomeState extends State<HomePage> {
-  Image myImage;
+  
 
   @override
   void initState() {
-   // myImage = Image.asset("assets/images/background.png");
+    
+   
     Text sample = Text('Smart Traveller',
         textScaleFactor: 1.0,
         style: GoogleFonts.pacifico(
@@ -38,18 +39,13 @@ class _NewHomeState extends State<HomePage> {
               TextStyle(color: Colors.white, letterSpacing: .5, fontSize: 20),
         ));
     super.initState();
-
+  
+   
     //
     //
   }
 
-  @override
-  void didChangeDependencies() {
-    //super.didChangeDependencies();
-    //precacheImage(myImage.image, context);
-
-    super.didChangeDependencies();
-  }
+ 
 
   Widget build(BuildContext context) {
     return new Scaffold(

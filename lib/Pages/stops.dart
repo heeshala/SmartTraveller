@@ -133,7 +133,7 @@ class _NewMapState extends State<Stops> {
        extendBodyBehindAppBar: true,
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.white),
-        title: Text(AppLocalizations.of(context).busstops,textScaleFactor: 1.0,style:GoogleFonts.nunito(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 28,),),),
+        title: Text(AppLocalizations.of(context).busstops,textScaleFactor: 1.0,style:GoogleFonts.nunito(textStyle: TextStyle(color: Colors.white, letterSpacing: .5,fontSize: 25,),),),
         centerTitle: true,
         flexibleSpace: Container(
                decoration: new BoxDecoration(

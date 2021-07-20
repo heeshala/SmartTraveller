@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smart_traveller/Pages/home.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -10,7 +11,7 @@ import 'package:smart_traveller/l10n/l10n.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:smart_traveller/provider/local_provider.dart';
 import 'package:provider/provider.dart';
-
+import 'package:lottie/lottie.dart';
 import 'Pages/dataClass.dart';
 
 
@@ -82,17 +83,84 @@ class MyApp extends StatelessWidget {
       },
       
       
-      home: AnimatedSplashScreen(
-          duration: 1000,
-          splash: Image.asset('assets/images/smartbus.png'),
-          
-          nextScreen: HomePage(),
-          splashTransition: SplashTransition.fadeTransition,
-          
-          backgroundColor: Colors.blue[200],
-        ),
+      home: MyHomePage(),
         
     );
   }
   );
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
+  AnimationController _controller;
+ Image myImage,myImage2;
+  @override
+  void initState() {
+    super.initState();
+   myImage = Image.asset("assets/images/2223-01.png");
+   myImage2 = Image.asset("assets/images/b2-01.png");
+    _controller = AnimationController(vsync: this);
+  }
+ @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    precacheImage(myImage.image, context);
+    precacheImage(myImage2.image, context);
+    super.didChangeDependencies();
+  }
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Container(
+        decoration: new BoxDecoration(
+              gradient: new LinearGradient(
+                colors: [Color(0xFF5677ba), Color(0xFF63b6e2)],
+                begin: FractionalOffset.topLeft,
+                end: FractionalOffset.bottomRight,
+              ),
+              
+            ),
+        child: Center(
+          
+          child: ListView(
+             shrinkWrap: true,
+            children: [
+               Container(
+            
+          ),
+              Lottie.asset(
+                'assets/lottie/69266-work.json',
+                controller: _controller,
+                onLoaded: (composition) {
+                  _controller
+                    ..duration = composition.duration
+                    ..forward().whenComplete(() => Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => HomePage()),
+                        ));
+                },
+              ),
+              Text('',style: GoogleFonts.pacifico(
+                        textStyle: TextStyle(
+                            color: Colors.lightBlue[900],
+                            letterSpacing: .5,
+                            fontSize: 20),
+                      ),)
+            ],
+          ),
+        ),
+      ),
+    );
+  }
 }
