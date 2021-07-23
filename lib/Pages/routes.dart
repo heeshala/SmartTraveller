@@ -272,7 +272,7 @@ class _NewMapState extends State<Routes> {
                     begin: FractionalOffset.topLeft,
                     end: FractionalOffset.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight:Radius.circular(20) ),
                 ),
             ),
             elevation: 0.0,

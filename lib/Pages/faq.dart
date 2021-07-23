@@ -34,7 +34,7 @@ class Faq extends StatelessWidget {
                 begin: FractionalOffset.topLeft,
                 end: FractionalOffset.bottomRight,
               ),
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.only(bottomLeft: Radius.circular(20),bottomRight:Radius.circular(20) ),
             ),
           ),
           backgroundColor: Colors.transparent,
