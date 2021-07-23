@@ -145,12 +145,15 @@ class _MyHomePageState extends State<MyHomePage> with TickerProviderStateMixin {
                 onLoaded: (composition) {
                   _controller
                     ..duration = composition.duration
-                    ..forward().whenComplete(() => Navigator.push(
+                    ..forward().whenComplete(() {
+                      Navigator.pop(context);
+                      Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => HomePage()),
-                        ));
+                        );
+                    
                 },
-              ),
+              );}),
               Text('',style: GoogleFonts.pacifico(
                         textStyle: TextStyle(
                             color: Colors.lightBlue[900],

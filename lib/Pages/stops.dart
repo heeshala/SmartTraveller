@@ -214,108 +214,112 @@ void _settingModalBottomSheet(context, String idof, String stopname) {
       ),
       context: context,
       builder: (BuildContext bc) {
-        return Container(
-            height: 250,
-            child: new ListView(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(stopname,textScaleFactor: 1.0,
-                      textAlign: TextAlign.center,
-                      style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:20),)),
-                ),
-                StreamBuilder(
-                    stream: FirebaseFirestore.instance
-                        .collection('stops')
-                        .doc(idof)
-                        .snapshots(),
-                    builder: (context, snapshot) {
-                      if (!snapshot.hasData) {
-                        return Center(child: CircularProgressIndicator());
-                      }
-                      var userDocument = snapshot.data;
+        return ClipRRect(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25.0)),
+          child: Container(
+              height: 250,
+              child: new ListView(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(stopname,textScaleFactor: 1.0,
+                        textAlign: TextAlign.center,
+                        style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:20),)),
+                  ),
+                  StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection('stops')
+                          .doc(idof)
+                          .snapshots(),
+                      builder: (context, snapshot) {
+                        if (!snapshot.hasData) {
+                          return Center(child: CircularProgressIndicator());
+                        }
+                        var userDocument = snapshot.data;
 
-                      return Column(children: [
-                        for (var i = 0;
-                            i < userDocument["rloc"][Data.local].length;
-                            i++) ...[
-                              
-                          Padding(
-                            padding:
-                                const EdgeInsets.only(left: 4.0, right: 4.0),
-                            child: Card(
-                              color: Colors.blue[600],
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(6.0),
-                                    child: Icon(
-                                      Icons.directions_bus_outlined,
-                                      color: Colors.white,
+                        return Column(children: [
+                          for (var i = 0;
+                              i < userDocument["rloc"][Data.local].length;
+                              i++) ...[
+                                
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(left: 4.0, right: 4.0),
+                              child: Card(
+                                clipBehavior: Clip.antiAlias,
+                                color: Colors.blue[600],
+                                child: Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(6.0),
+                                      child: Icon(
+                                        Icons.directions_bus_outlined,
+                                        color: Colors.white,
+                                      ),
                                     ),
-                                  ),
-                                  
-                                  Text((userDocument["rloc"][Data.local][i].toString()),textScaleFactor: 1.0,
-                                      style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:25,color: Colors.white),)),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                    // this creates scat.length many elements inside the Column
-                                    if (userDocument['times']['$i'].length == 0)
                                     
-                                      Center( child:TextButton(
-                                        
-                                        child: Text(
-                                            AppLocalizations.of(context).noschedule,textScaleFactor: 1.0,
-                                            style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
-                                        onPressed: () {/* ... */},
-                                      )),//add text here
-                                     
-                                    if(userDocument['times']['$i'].length<4)...[
-                                       for (var l = 0;
-                                        l < userDocument['times']['$i'].length;
-                                        l++) ...[
-                                      TextButton(
-                                        child: Text(
-                                            userDocument["times"]['$i'][l]
-                                                .toString(),textScaleFactor: 1.0,
-                                            style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
-                                        onPressed: () {/* ... */},
-                                      ),
-                                      const SizedBox(width: 8),
-                                    ]
-                                    ]
-                                    else...[
-                                      for (var l = 0;
-                                        l < 4;
-                                        l++) ...[
-                                      TextButton(
-                                        child: Text(
-                                            userDocument["times"]['$i'][l]
-                                                .toString(),textScaleFactor: 1.0,
-                                            style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
-                                        onPressed: () {/* ... */},
-                                      ),
-                                      const SizedBox(width: 8),
-                                    ]
-                                    ]
+                                    Text((userDocument["rloc"][Data.local][i].toString()),textScaleFactor: 1.0,
+                                        style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:25,color: Colors.white),)),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                      // this creates scat.length many elements inside the Column
+                                      if (userDocument['times']['$i'].length == 0)
+                                      
+                                        Center( child:TextButton(
                                           
-                                     
-                                    
-                                  ]),
-                                ],
+                                          child: Text(
+                                              AppLocalizations.of(context).noschedule,textScaleFactor: 1.0,
+                                              style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
+                                          onPressed: () {/* ... */},
+                                        )),//add text here
+                                       
+                                      if(userDocument['times']['$i'].length<4)...[
+                                         for (var l = 0;
+                                          l < userDocument['times']['$i'].length;
+                                          l++) ...[
+                                        TextButton(
+                                          child: Text(
+                                              userDocument["times"]['$i'][l]
+                                                  .toString(),textScaleFactor: 1.0,
+                                              style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
+                                          onPressed: () {/* ... */},
+                                        ),
+                                        const SizedBox(width: 8),
+                                      ]
+                                      ]
+                                      else...[
+                                        for (var l = 0;
+                                          l < 4;
+                                          l++) ...[
+                                        TextButton(
+                                          child: Text(
+                                              userDocument["times"]['$i'][l]
+                                                  .toString(),textScaleFactor: 1.0,
+                                              style: GoogleFonts.nunito(textStyle:TextStyle(fontSize:18,color: Colors.white),)),
+                                          onPressed: () {/* ... */},
+                                        ),
+                                        const SizedBox(width: 8),
+                                      ]
+                                      ]
+                                            
+                                       
+                                      
+                                    ]),
+                                  ],
+                                ),
                               ),
-                            ),
-                          )
-                        ],
-                      ]);
-                    }
-                    
+                            )
+                          ],
+                        ]);
+                      }
+                      
 
-                    ),
-              ],
-            ));
+                      ),
+                ],
+              )),
+        );
       });
 
 
